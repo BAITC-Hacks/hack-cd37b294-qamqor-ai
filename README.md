@@ -1,102 +1,400 @@
-# Halyk CallAI — working text + voice demo
+# Halyk CallAI
 
-Halyk-style insurance assistant over the **fictional Saqta Insurance starter kit**. All business operations are local mock executions. Official dataset and evaluator are unchanged. Architecture remains locked by `../BUILD_SPEC.md`.
+Текстовый и голосовой помощник по страхованию на русском и казахском языках. Он определяет задачу клиента, уточняет сведения и выполняет демонстрационные операции; супервизор видит маршрут, основания решения и результат.
 
-## Start on Windows
+## 2. О проекте
 
-Requirements: Python 3.12+, Node.js 20.9+ and npm. From `halyk-callai`:
+Клиент может описать проблему своими словами: например, деньги списались, а полис не пришёл. Ассистент должен различить похожие ситуации, собрать данные и продолжить нужный сценарий, сохраняя контекст разговора.
 
-```powershell
-.\scripts\run.ps1 demo
-```
+Проект предназначен для клиента страхового контакт-центра и супервизора. Клиент получает справочный ответ, уточняющий вопрос или результат операции в демо-системе. AI понимает свободную речь, выбирает сценарий и извлекает данные; правила исполнения проверяются отдельно в backend.
 
-The command installs constrained Python dependencies, installs frontend dependencies if missing, builds Next.js, and starts the backend and frontend. Open **http://127.0.0.1:3000**, supervisor **http://127.0.0.1:3000/supervisor**. Default `.\scripts\run.ps1` does the same. Ctrl+C stops the child backend. The application is deliberately bound to loopback, with one backend worker.
+**Это локальный прототип.** Страховые сведения относятся к вымышленной **Saqta Insurance** из набора данных. Интеграции с реальной страховой компанией, банком и телефонной системой нет.
 
-Set your key locally in `.env`. Keep **CALLAI_MODEL=gpt-6-astra**: L2 is locked; production startup rejects a different routing model. No key is included in source or snapshots. `/ready` indicates configuration, not verified provider access.
+## 3. Что реализовано
 
-```powershell
-.\scripts\run.ps1 test
-.\scripts\run.ps1 validate
-.\scripts\run.ps1 compile
-.\scripts\run.ps1 baseline
-.\.venv\Scripts\python scripts\live_acceptance.py
-.\.venv\Scripts\python scripts\voice_probe.py
-```
+### Для клиента
 
-The last two commands require a running backend and make real paid provider requests. Baseline runs the original 104 official examples and unchanged official scorer. Do not generate a large synthetic corpus.
+- Чат с выбором RU/KK, историей и восстановлением последней сессии в браузере.
+- Голосовой ввод отдельными репликами и озвучивание ответа; микрофон может прервать воспроизведение.
+- Уточнение запроса, сбор обязательных полей, исправление сведений и возврат к предыдущей теме.
+- Предпросмотр и отдельное подтверждение операций, помеченных в каталоге как необратимые.
+- Шесть встроенных демо: офис, проблема оплаты, исправление сведений, возврат к теме, подтверждение действия и запрос на казахском.
 
-## Measured results — 23 September 2026
+### Обработка и наблюдение
 
-- **Frozen L2 regression after integration:** primary and full-match **104/104**, multi-intent recall **26/26**. Router mean **8.254 s**, P95 **13.130 s**. Zero final schema/API/system-intent failures; one successful schema repair. [Report](evaluation/integration-final-astra/baseline.md), [official scorer](evaluation/integration-final-astra/20260923T111919_964539Z/official_stdout.txt).
-- **Boundary probe:** PASS, CLARIFY, no action permission. [Actual result](evaluation/results/boundary_probe_20260923T112357_236619Z/result.json).
-- **131 backend tests**, **1 browser-playback unit test** passed. Dataset validation, compileall, pip check, production frontend build, HTTP smoke and actual Windows startup executed successfully.
-- **Six live text acceptance paths:** PASS; **12 actual turns**, average complete text turn **7.899 s**, including router, policy, actions and response composition. [Recorded requests/responses](evaluation/product-acceptance/turns.json), [assertion results](evaluation/product-acceptance/results.json).
-- **Live voice API round trips:** RU **11.03 s**, KK **9.79 s**, from recorded audio upload through final synthesized response. Includes STT, chat and TTS; excludes the time a human spends speaking and playback duration. [Probe](evaluation/voice-probe/results.json). Input fixtures were generated speech, not recordings of a human microphone. RU/KK output MP3s are in that directory.
-- Customer and supervisor pages were exercised through a real browser. The supervisor displayed actual evidence, missing boundary, exact turn source, dialogue action and measured timing.
+- Каталог из 40 бизнес-сценариев и 3 системных намерений: непонятный запрос, вопрос вне компетенции и прощание.
+- Проверка структурированного ответа LLM, источников, цитат и извлечённых полей.
+- Детерминированные правила выбора маршрута и работы с несколькими темами.
+- Mock-операции: поиск клиента и полиса, расчёты по тестовым тарифам, изменение контактов, работа с полисами и обращениями, запись демонстрационных уведомлений.
+- SQLite для разговоров, операций, состояния mock-данных и событий; защита от повторного выполнения по идентификатору операции.
+- Пульт супервизора: сценарий, альтернативы, различающие факты, цитаты, состояние до/после, вызовы backend, источники и время обработки.
 
-These are reused development-set results, not independent hidden-test accuracy or a production SLO. Test fixtures never replace official predictions.
+## 4. Как работает решение
 
-## Golden L2 preservation
+1. Клиент вводит текст или записывает реплику. Запись отправляется после остановки микрофона.
+2. Голос преобразуется в текст через STT. Текстовый запрос сразу поступает в `/api/chat`.
+3. Backend загружает историю, текущую тему, собранные поля и результаты предыдущих операций.
+4. LLM предлагает сценарии, данные и основания выбора. Валидатор проверяет структуру и источники; политика определяет следующий шаг.
+5. Система уточняет запрос, собирает недостающие поля либо вызывает mock-backend и базу знаний. Для защищённых операций ожидает подтверждения.
+6. Составитель ответа использует шаблон либо отдельный LLM-вызов по полученным фактам. Ответ и состояние сохраняются в SQLite.
+7. Клиент видит текст; для голосового запроса дополнительно воспроизводится AI-речь. Супервизор получает журнал обработки.
 
-`golden/L2/` preserves the exact original source, dataset hashes, configuration and evaluation artifacts. `golden/L2/LOCK.json` records **16 protected source hashes**, model, reasoning and cache options. All protected files match, verified by `test_golden.py` and [verification artifact](evaluation/golden-verification.json). L3/L4 are not used; the stopped L4 partial run remains explicitly marked incomplete.
+## 5. Инструкция по использованию
 
-During integration a local `.env` override selected `gpt-6-luna`. That diagnostic run scored 99/104 full-match, 23/26 recall; it is preserved in `evaluation/integration-final/` and **is not L2**. Restoring the authorized golden model to `gpt-6-astra`, without changing prompt/policy/contracts, restored 104/104. The related initial failed live dialogues are retained under `evaluation/product-acceptance-luna-diagnostic/`.
+### Текстовый разговор
 
-## Architecture
+1. Откройте **[http://127.0.0.1:3000](http://127.0.0.1:3000)** — основной клиентский экран.
+2. Выберите **RU** или **KK** справа вверху.
+3. Нажмите **«Новый разговор»**, чтобы начать отдельную сессию.
+4. Введите вопрос в поле **«Сообщение»** и нажмите стрелку отправки или Enter. Например: `Где находится ваш офис в Алматы?`.
+5. Дождитесь ответа в ленте. Если ассистент запрашивает данные, отправьте их следующим сообщением.
+6. Если появилась панель подтверждения, проверьте параметры и нажмите **«Подтвердить»**. Изменения применяются только к демо-данным.
+7. По ссылке **«Пульт супервизора»** откройте разбор разговора. Выберите разговор и ход в списках; данные обновляются каждые 2,5 секунды.
+
+Кнопка демо сама создаёт новую сессию и отправляет первую реплику. В многошаговых примерах следующую реплику отправляет кнопка **«Следующая реплика демо →»**.
+
+### Голосовой разговор
+
+1. Убедитесь, что отображается **«Голос настроен»**. Индикатор означает наличие конфигурации, а не проверку доступа к провайдеру.
+2. Выберите язык, нажмите микрофон и разрешите браузеру доступ к нему.
+3. Произнесите вопрос. Нажмите **■**, чтобы закончить запись и отправить её на распознавание.
+4. Распознанная реплика и ответ появятся в чате; ответ будет озвучен AI-голосом.
+5. Повторное нажатие микрофона прерывает озвучивание и начинает следующую запись. При недоступности голоса можно продолжить текстом.
+
+Это запись отдельных реплик, а не непрерывный телефонный звонок. Для завершения диалога можно отправить «До свидания»; отдельной кнопки завершения звонка нет. **«Новый разговор»** начинает новую сессию, не удаляя предыдущую.
+
+## 6. Технологический стек
+
+| Компонент | Технология | Назначение |
+| --- | --- | --- |
+| Интерфейс | Next.js 15, React 19, TypeScript, Tailwind CSS 4 | Чат и пульт супервизора |
+| Backend | Python 3.12+, FastAPI, Pydantic, Uvicorn | API, контракты и обработка диалога |
+| HTTP-клиент | HTTPX | Вызовы внешнего AI API |
+| LLM | `gpt-6-astra`, `POST /responses` | Маршрутизация; часть ответов по фактам |
+| STT | `whisper-1`, `POST /audio/transcriptions` | Распознавание записанной реплики |
+| TTS | `gpt-4o-mini-tts`, `POST /audio/speech` | Синтез MP3; в `.env.example` голос `marin` для RU и KK |
+| Хранение | SQLite через `sqlite3`, JSON, JSONL | Сессии, mock-операции, каталог, база знаний, события |
+| Аудио браузера | MediaRecorder, MediaSource, резервное воспроизведение полного файла | Запись, потоковое воспроизведение и прерывание |
+| Инфраструктура и тесты | PowerShell, Docker Compose для backend, pytest, Node.js test runner | Локальный запуск и проверки |
+
+Названия AI-моделей подтверждаются телами запросов в коде. Доступность по конкретному ключу и адресу API требует отдельной проверки. Локальные AI-модели, embeddings, reranker и компьютерное зрение в рабочем pipeline не используются.
+
+## 7. Архитектура
 
 ```mermaid
 flowchart TD
-  Browser[Next.js customer UI] -->|text or final STT| Chat[ConversationService]
-  Chat --> L2[Frozen L2 router and deterministic policy]
-  L2 --> State[Topic state and canonical slots]
-  State --> Gate[Confirmation and idempotent dispatcher]
-  Gate --> Mock[SQLite mock backend]
-  Gate --> KB[Canonical knowledge_base.json]
-  Mock --> Response[Grounded RU/KK response composer]
-  KB --> Response
-  Response --> Browser
-  Response --> TTS[TTS provider]
-  TTS --> Browser
-  Chat -. nonblocking queue .-> Trace[SQLite and JSONL traces]
-  Trace --> Supervisor[Supervisor UI]
+    U["Клиент: текст или микрофон"] --> F["Next.js: клиентский экран"]
+    F -->|"прокси /api/*"| B["FastAPI"]
+    B -->|"аудиозапись"| STT["Внешний STT API"]
+    STT -->|"текст"| F
+    B --> C["Сервис диалога"]
+    C --> R["LLM-маршрутизатор"]
+    R --> A["Внешний Responses API"]
+    A --> R
+    R --> V["Валидация и политика"]
+    V --> D["Сбор полей и диспетчер"]
+    D --> M["Mock-backend"]
+    D --> K["База знаний JSON"]
+    M --> DB[("SQLite")]
+    C --> DB
+    D --> O["Составитель ответа"]
+    O -->|"при необходимости"| A
+    O --> C
+    C --> F
+    B -->|"сохранённый ответ"| TTS["Внешний TTS API"]
+    TTS -->|"MP3 через backend"| F
+    C --> E["Журнал событий"]
+    E --> DB
+    S["Next.js: супервизор"] -->|"опрос API"| B
 ```
 
-B6–B9: persistent sessions, full history, stack and unresolved tasks; scoped slots with provenance and correction history; canonical action inputs/results, backend verification, preview, explicit confirmation bound to operation/parameters/topic/version; transactionally persisted operation ledger; direct KB retrieval with source pointers. All 31 canonical mock actions have execution and replay tests.
+- **Frontend** отправляет запросы на свой `/api/*`; Next.js перенаправляет их на `127.0.0.1:8000`. Ключи остаются на backend.
+- **Маршрутизатор** получает каталог, историю и текущую реплику; сам операции не выполняет.
+- **Политика и диспетчер** проверяют маршрут, собирают поля и управляют подтверждением и выполнением.
+- **Mock-backend и база знаний** дают факты и сохраняют демонстрационные изменения.
+- **Составитель ответа** отделён от маршрутизации. Голосовой слой озвучивает уже сохранённый ответ.
+- **Супервизор** показывает события обработки и источники, а не скрытые рассуждения модели.
 
-B10–B12: trace queue does not await storage on the response path. Traces include state before/after, attributable evidence and supersession, boundaries, actions, KB citations, retries, errors and stage timings. Supervisor polls actual API records. Critical tests cover corrections, SWITCH/RESTORE, retained secondary intents, missing parameters, stale versions, duplicate requests/operations, service failures and voice degradation.
+## 8. Структура проекта
 
-B13–B14: isolated STTProvider/TTSProvider interfaces; browser MediaRecorder sends only a stopped/final utterance. STT text goes through the same `/api/chat`. RU/KK selection supplies a transcription hint. TTS reads only a committed response. Starting the microphone stops playback; generation tokens reject late stale audio. Interruption events preserve committed state. Optional Pipecat bridge is included but the Pipecat package/transport was not installed or tested; the working demo uses the browser final-utterance transport requested in the latest task.
+```text
+.
+├── backend/app/
+│   ├── catalog/           # Загрузка и проверка каталога
+│   ├── router/            # LLM-запросы, промпт и валидация
+│   ├── policy/            # Правила маршрутизации и тем
+│   ├── state/             # Сервис диалога и SQLite
+│   ├── slots/             # Сбор и исправление полей
+│   ├── actions/           # Диспетчер и mock-backend
+│   ├── kb/                # Доступ к базе знаний
+│   ├── response/          # Формирование ответа
+│   ├── voice/             # STT, TTS, нормализация речи
+│   └── observability/     # Журнал событий
+├── backend/tests/         # Модульные и интеграционные тесты
+├── frontend/              # Чат, супервизор, аудиотесты
+├── scripts/               # Запуск и проверочные сценарии
+├── golden/L2/             # Зафиксированное ядро и копия датасета
+├── evaluation/            # Оценка маршрутизации и отчёты
+├── data/                  # Сохранённый скомпилированный каталог
+├── docs/                  # Документация голоса и изображения
+├── .env.example           # Шаблон без ключей
+├── pyproject.toml         # Python-зависимости
+├── requirements.lock      # Ограничения версий Python-пакетов
+├── Dockerfile             # Образ backend
+└── docker-compose.yml     # Запуск только backend
+```
 
-## Six demo shortcuts
+## 9. Установка и запуск
 
-Click a shortcut to create a new conversation and send a real request. For multi-turn shortcuts click **Следующая реплика демо**. Confirmations execute only after the explicit **Подтвердить** button.
+### Требования
 
-1. **Найти офис:** canonical Almaty address and hours.
-2. **Деньги списали:** ambiguous mixed-language query → clarification → supplied phone/date → actual failed-payment record and mock handoff.
-3. **Исправить сведения:** first email → corrected email; old evidence superseded and confirmation replaced.
-4. **Вернуться к теме:** cancellation preview → office interruption → RESTORE with original policy and reason.
-5. **Подтвердить действие:** change demo email, inspect preview, confirm exactly once. C001 IIN is a fictional provided test identifier.
-6. **Қазақша сөйлесейік:** Kazakh office request and response.
+- Python **3.12+**, согласно `pyproject.toml`.
+- Node.js и npm. Совместимый вариант для зависимостей из lock-файла — **Node.js 20.9+**; отдельной фиксированной версии Node в проекте нет.
+- Windows PowerShell для общего скрипта запуска. При ручном запуске Python и npm запускаются отдельно.
+- Сеть для установки пакетов и AI-запросов; ключ и API с доступом к указанным моделям.
+- Свободные порты **3000** и **8000**, браузер с микрофоном для голосового демо.
 
-Open the supervisor link from the current conversation. Select earlier turns to see their committed state and evidence. Voice requires microphone permission in the browser; use RU/KK before recording. Press the microphone again to finish the utterance. Audio is AI generated.
+Отдельный сервер БД и GPU не требуются. Docker для локального запуска не обязателен.
 
-## Configuration, persistence and limits
+### Клонирование
 
-- Runtime state: `runtime/callai.sqlite`; JSONL: `runtime/callai.events.jsonl`; server logs: `backend/runtime/`. All ignored by git. `CALLAI_DATABASE` may select another local SQLite file. Restart preserves sessions and mock mutations.
-- `CALLAI_VOICE_ENABLED=false` disables voice while text/supervisor remain available. Missing audio credentials does not prevent app startup. `CALLAI_VOICE_API_KEY`/`CALLAI_VOICE_BASE_URL` optionally override shared OpenAI credentials; STT defaults to whisper-1, TTS to gpt-4o-mini-tts/coral. Audio settings can be set in `.env` or environment.
-- Reference date is the official **2026-10-01**. Original data stays read-only; execution mutates its local persisted copy. SMS/email/callback/handoff actions record an outbox entry, not external delivery. Newly created/renewed policies are pending payment, never falsely reported active.
-- OGPO quote defaults to the provided 12-month formula; CASCO quote uses Standard. No amendment tariff is supplied, so extra premium remains unknown. Travel country classification supports listed common countries; unsupported countries request verification rather than inventing a tariff.
-- The kit contains locations but no appointment calendar. Booking uses a clearly simulated weekday 09:00–16:00 schedule with persistent reservations. No real clinic or inspection appointment is booked.
-- Local demonstration only: no production authentication, identity proofing, external payment system, production availability calendar or delivery provider. Customer IDs are lookup data, not authentication. Do not expose these local supervisor endpoints publicly.
-- A human microphone/speaker test and independent multi-speaker/noisy Kazakh speech benchmark remain unverified. The executed voice probe is only two generated utterances; it does not establish speech accuracy broadly.
-- No routing latency optimization was introduced in this phase. Customer composition uses a separate grounded model call only when deterministic templates are insufficient; its latency/call count are separate from L2.
+```powershell
+git clone https://github.com/BAITC-Hacks/hack-cd37b294-qamqor-ai.git
+cd hack-cd37b294-qamqor-ai
+Copy-Item .env.example .env
+```
 
-Official API references: [speech transcription](https://developers.openai.com/api/docs/guides/speech-to-text), [speech synthesis](https://developers.openai.com/api/docs/guides/text-to-speech).
+### Переменные окружения
 
-## Files changed in the product build
+Откройте `.env` и заполните `OPENAI_API_KEY` своим ключом. `CALLAI_DATASET_PATH` можно оставить пустым: встроенный датасет выбирается автоматически. При необходимости путь можно переопределить:
 
-Restored to golden: `backend/app/router/`, `policy/`, `catalog/`, `config/` (hash-preserved after restoration). Runtime model restored in ignored `.env`; key untouched.
+```dotenv
+CALLAI_DATASET_PATH=golden/L2/case_2/voice_router_dataset
+```
 
-Added: `backend/app/state/`, `slots/`, `actions/`, `kb/`, `response/`, `observability/`, `voice/`; `frontend/` (Next.js, TypeScript, Tailwind, lockfile, playback test); action/conversation/voice/golden tests; `scripts/live_acceptance.py`, `scripts/voice_probe.py`; `golden/L2/`; evaluation and acceptance artifacts.
+Явно заданный относительный путь выше работает при запуске из корня проекта. Дефолтный путь вычисляется от расположения проекта и не зависит от рабочего каталога.
 
-Updated: `backend/app/main.py`, `scripts/run.ps1`, `.env.example`, `.gitignore`, this README and BUILD_LOG. Official gold, evaluator and canonical data were not changed. Earlier B5 history remains in `evaluation/BASELINE_NOTES.md` and timestamped results.
+**По умолчанию** приложение использует включённый в Git каталог `golden/L2/case_2/voice_router_dataset`. Отдельный внешний датасет для запуска не нужен.
+
+| Переменная | Назначение | Обязательная |
+| --- | --- | --- |
+| `OPENAI_API_KEY` | Ключ LLM; по умолчанию также аудио | Да, для обработки запросов клиента |
+| `OPENAI_BASE_URL` | Адрес API; по умолчанию `https://api.openai.com/v1` | Если используется другой совместимый сервис |
+| `CALLAI_MODEL` | `gpt-6-astra` для маршрутизации и составления ответов | Оставить это значение: обычный запуск запрещает другую модель |
+| `CALLAI_DATASET_PATH` | Переопределение каталога JSON-файлов и `evaluate.py` | Нет; по умолчанию встроенный `golden/L2/case_2/voice_router_dataset` |
+| `CALLAI_TIMEOUT_SECONDS` | Тайм-аут LLM, по умолчанию 90 секунд | Нет |
+| `CALLAI_DATABASE` | Путь SQLite | Нет; фактический путь по умолчанию — `backend/runtime/callai.sqlite` |
+| `CALLAI_VOICE_ENABLED` | Включение голосовых API | Нет; по умолчанию `true` |
+| `CALLAI_VOICE_API_KEY`, `CALLAI_VOICE_BASE_URL` | Отдельные ключ и адрес аудиосервиса | Нет; наследуются настройки `OPENAI_*` |
+| `CALLAI_STT_MODEL` | Модель распознавания, `whisper-1` | Нет |
+| `TTS_PROVIDER`, `TTS_MODEL` | Провайдер `openai`, модель `gpt-4o-mini-tts` | Нет; другие провайдеры код не поддерживает |
+| `TTS_VOICE_RU`, `TTS_VOICE_KK` | Голоса; в шаблоне оба `marin` | Нет; резерв — `CALLAI_TTS_VOICE`, затем `coral` |
+| `TTS_SPEED`, `TTS_INSTRUCTIONS` | Скорость 1.0 и дополнительные инструкции речи | Нет |
+| `CALLAI_EVAL_CONCURRENCY` | Параллельность оценочного запуска, по умолчанию 2 | Нет |
+
+`CALLAI_TTS_MODEL` и `CALLAI_TTS_VOICE` сохранены как резервные настройки; `TTS_MODEL` и языковые `TTS_VOICE_*` имеют приоритет. Переменные процесса имеют приоритет над `.env`. Не добавляйте `.env` в Git.
+
+### Общий запуск на Windows
+
+Из корня проекта:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run.ps1 demo
+```
+
+Политика исполнения задаётся только для этого процесса PowerShell. Скрипт создаёт `.venv`, устанавливает Python-зависимости, выполняет `npm ci` при отсутствии `node_modules`, собирает frontend, запускает backend и `next start`. Не запускайте второй экземпляр поверх уже работающего. Для остановки используйте Ctrl+C; скрипт завершает запущенный им backend.
+
+| Адрес | Назначение |
+| --- | --- |
+| [http://127.0.0.1:3000](http://127.0.0.1:3000) | Клиентский экран |
+| [http://127.0.0.1:3000/supervisor](http://127.0.0.1:3000/supervisor) | Пульт супервизора |
+| [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) | Интерактивная документация API |
+| [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health) | Состояние приложения |
+| [http://127.0.0.1:8000/ready](http://127.0.0.1:8000/ready) | Наличие конфигурации; доступ к AI API не проверяет |
+
+### Раздельный запуск на Windows
+
+Первый терминал, из корня проекта:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e '.[test]' -c requirements.lock
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Второй терминал, также из корня проекта:
+
+```powershell
+cd frontend
+npm.cmd ci
+npm.cmd run build
+npm.cmd run start
+```
+
+`npm.cmd` позволяет запускать npm на Windows без исполнения `npm.ps1`. Для разработки в `package.json` также предусмотрен `npm run dev`.
+
+### Что даёт Docker
+
+В репозитории предусмотрена команда:
+
+```bash
+docker compose up --build
+```
+
+Но текущий Compose поднимает **только backend** на `127.0.0.1:8000`. Он монтирует встроенный `./golden/L2/case_2/voice_router_dataset` в `/data/starter_kit`: значение `CALLAI_DATASET_PATH` из `.env` не меняет этот bind mount. Frontend запускается отдельно. Compose передаёт только перечисленные в нём LLM-настройки и путь датасета; голосовые настройки из `.env`, включая `marin`, автоматически в контейнер не попадают. Том SQLite не настроен. Docker-запуск в рамках аудита не проверялся.
+
+## 10. Быстрый запуск для жюри
+
+Нужны Python 3.12+, Node.js/npm и доступ к AI API. В PowerShell:
+
+```powershell
+git clone https://github.com/BAITC-Hacks/hack-cd37b294-qamqor-ai.git
+cd hack-cd37b294-qamqor-ai
+Copy-Item .env.example .env
+```
+
+В `.env` заполните **`OPENAI_API_KEY`**, при необходимости **`OPENAI_BASE_URL`**. `CALLAI_DATASET_PATH` оставьте пустым: встроенный датасет выбирается автоматически.
+
+Затем:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run.ps1 demo
+```
+
+Откройте **[http://127.0.0.1:3000](http://127.0.0.1:3000)**. Без доступного LLM API интерфейс можно открыть, но даже текстовый демо-запрос не будет обработан. Сервис должен поддерживать `gpt-6-astra`, структурированный ответ и параметры кэширования из кода.
+
+## 11. Как проверить решение — демо для жюри
+
+### Сценарий: изменение контакта с исправлением и подтверждением
+
+Используются тестовый клиент из `mock_backend.json` и реплики встроенных демо и `scripts/live_acceptance.py`.
+
+**Шаг 1.** Откройте клиентский экран, выберите RU и нажмите **«03 · Исправить сведения»**. Будет отправлено:
+
+```text
+Хочу поменять email, ИИН 850314300121. Новый адрес first@example.com
+```
+
+**Шаг 2.** Дождитесь предложения подтвердить действие. Пока не подтверждайте. Нажмите **«Следующая реплика демо →»**, чтобы отправить:
+
+```text
+Нет, ошибся: новый email second@example.com
+```
+
+**Шаг 3.** Убедитесь, что новое предложение содержит `second@example.com`, затем нажмите **«Подтвердить»**.
+
+**Шаг 4.** Откройте **«Пульт супервизора»**. Выберите ход исправления, затем ход подтверждения. Посмотрите поля, ожидаемую операцию и блок **Mock backend**.
+
+### Ожидаемый результат
+
+- До подтверждения ассистент предлагает изменение, а не сообщает об уже выполненной операции.
+- Новое значение заменяет старое; прежнее подтверждение становится недействительным.
+- После подтверждения чат сообщает об обновлении контакта в демо-системе. В журнале вызов `update_contact` содержит `new_value: second@example.com`, ожидаемая операция очищена.
+- Изменение сохраняется в локальной SQLite; реальная почта не отправляется.
+
+Выбор маршрута зависит от LLM: точная формулировка не гарантируется. Если данных недостаточно, ответьте на уточнение; при ошибке API сначала проверьте конфигурацию.
+
+Для дополнительной проверки голоса выберите KK и запишите: `Алматыдағы кеңсеңіз қайда орналасқан? Қазақша жауап беріңізші.` Ожидается ответ об офисе из базы знаний с озвучиванием. В тестовой записи указаны `Abai Ave 150` и `Mon-Fri 09:00-18:00, Sat 10:00-15:00`; это сведения вымышленной компании.
+
+## 12. API
+
+| Метод | Endpoint | Назначение |
+| --- | --- | --- |
+| GET | `/health`, `/ready` | Состояние и наличие LLM-конфигурации |
+| POST | `/api/session` | Создать сессию с `language: ru` или `kk` |
+| GET | `/api/session/{conversation_id}` | История и состояние |
+| POST | `/api/chat` | Обработать реплику и допустимые mock-действия |
+| POST | `/api/route` | Маршрутизация без выполнения операций |
+| GET | `/api/supervisor/sessions` | Последние сессии |
+| GET | `/api/supervisor/session/{conversation_id}` | Состояние и события разговора |
+| GET | `/api/voice/status` | Конфигурация голоса без проверки доступа к провайдеру |
+| POST | `/api/voice/transcribe?language=ru` | Распознать аудио из тела запроса |
+| POST | `/api/voice/speech?stream=true` | Озвучить сохранённый ход по `conversation_id` и `turn_id` |
+
+Минимальный пример для bash/curl. Сначала создайте сессию:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/session \
+  -H 'Content-Type: application/json' \
+  -d '{"language":"ru"}'
+```
+
+Подставьте возвращённый `conversation_id`:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"conversation_id":"<conversation_id>","turn_id":"demo-1","text":"Где находится ваш офис в Алматы?","language":"ru"}'
+```
+
+Ответ содержит `text`, `language`, `state_version`, `pending_action`, `citations` и `latency`. Для новой реплики используйте новый `turn_id`. Подтверждение требует `confirm_operation_id` из предложения и актуального `expected_state_version`. Схемы доступны в `/docs`.
+
+## 13. Данные и интеграции
+
+- **`golden/L2/case_2/voice_router_dataset/`** — отслеживаемая Git копия данных: сценарии, поля, действия, база знаний, mock-клиенты/полисы/платежи/обращения, 104 оценочные реплики, 10 примеров диалогов и `evaluate.py`.
+- **`knowledge_base.json`** — продукты, тестовые тарифы, офисы, клиники и справочные сведения. Поиск по разделу и сценарию.
+- **`mock_backend.json`** — начальное состояние демо. Копируется в SQLite при первом создании БД; исходный JSON не изменяется.
+- **`backend/runtime/callai.sqlite`** — фактический путь БД по умолчанию. События также дописываются в соседний `callai.events.jsonl`. Отдельного инструмента миграций нет: таблицы создаются кодом при старте.
+- **Внешний AI API** — единственная внешняя интеграция рабочего pipeline. Адрес по умолчанию — OpenAI; можно настроить совместимый адрес.
+- **Уведомления, передача оператору и запись на приём** — записи в mock-данных. Реальной отправки SMS/email, телефонии, CRM и подключения к календарю нет.
+
+## 14. AI-компонент
+
+| Этап | Вход | Выход |
+| --- | --- | --- |
+| STT, `whisper-1` | Аудиофайл и язык | Распознанный текст |
+| Маршрутизатор, `gpt-6-astra` | Каталог, история, поля, факты, новая реплика | JSON: сценарии, источники, цитаты, проверки границ, обновления полей |
+| Составитель, `gpt-6-astra` при необходимости | Результаты backend и записи базы знаний | JSON с ответом и идентификаторами источников |
+| TTS, `gpt-4o-mini-tts` | Нормализованный сохранённый ответ, язык, голос и инструкции | MP3 целиком либо поток байтов |
+
+Промпт находится в `backend/app/router/prompt.py`. Каталог компилируется из определений и правил; оценочные реплики, эталонные ответы и примеры диалогов в промпт не включаются.
+
+За ход маршрутизатор делает один основной запрос и не более одного дополнительного для исправления структуры или повторного анализа. Проверяются схема, идентификаторы, цитаты и источники. Если различающего факта нет, политика выбирает уточнение. Это не гарантия отсутствия ошибок AI.
+
+Ответ об офисе, подтверждение и ряд других ответов формируются шаблонами. Для остальных фактов составитель может вызвать LLM; затем проверяет источники и новые числовые утверждения. При неудаче возвращает сообщение о невозможности сформировать ответ.
+
+**Векторного RAG, embeddings и reranker нет.** Есть детерминированное получение разделов JSON-базы знаний и передача фактов составителю. Function/tool calling через API не используется: модель возвращает структурированное предложение, а функции вызывает Python-диспетчер. Inference внешний. При ошибке TTS сохранённый текст остаётся доступным.
+
+## 15. Ограничения текущей версии
+
+- Все страховые действия и данные демонстрационные; подтверждение не создаёт реальную страховку, платёж, письмо или соединение с оператором.
+- Нет production-аутентификации, разграничения доступа и проверки личности. Супервизор показывает историю и тестовые персональные данные. Локальный запуск привязан к loopback.
+- Для содержательного диалога нужен внешний LLM. Полноценного автономного режима с подменой AI нет; фикстуры используются в тестах.
+- `gpt-6-astra` зафиксирована проверкой при обычном старте. Совместимость провайдера с ней, `prompt_cache_options` и `prompt_cache_breakpoint` нужно проверить реальным запросом. `/ready` этого не делает.
+- Голос работает законченными репликами: без потоковой расшифровки, VAD и телефонного канала. Лимит входного аудио — 20 МБ; нормализованный текст TTS свыше 4096 символов отклоняется.
+- Качество казахской речи зависит от модели и записи. Автотесты не подтверждают субъективную естественность произношения.
+- Даты бизнес-логики привязаны к дате датасета **2026-10-01**, а не к дате компьютера. Доступность слотов записи моделируется кодом.
+- История накапливается в SQLite и передаётся маршрутизатору; суммаризация длинных разговоров не реализована.
+- Docker Compose запускает только backend. Приложение, тесты и CLI по умолчанию используют встроенный датасет `golden/L2/case_2/voice_router_dataset`.
+
+### Проверки при обновлении README
+
+В текущем рабочем окружении выполнены: **202 backend-теста**, **9 тестов аудиовоспроизведения**, сборка `npm.cmd run build`, валидация вложенного датасета и проверка запуска API с этой копией и временной SQLite. После исправления дефолтного пути выполнен один реальный запрос через HTTP `/api/chat` и `gpt-6-astra`: вопрос об офисе в Алматы, HTTP 200, сценарий `SC33`, один LLM-вызов без повторов, ответ из `get_offices` и сохранение истории. Затем повторно прошли 202 backend-теста и 9 аудиотестов. STT/TTS и Docker в этих проверках не запускались. Тесты с подменённым HTTP-транспортом не измеряют качество моделей.
+
+Проверить включённую копию данных после установки зависимостей:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/validate_dataset.py --dataset golden/L2/case_2/voice_router_dataset
+```
+
+Для полного pytest фикстуры используют встроенный датасет напрямую, независимо от `.env`. Запустите из корня проекта:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest -q
+cd frontend
+npm.cmd test
+```
+
+Исторические результаты находятся в `evaluation/results/` и `golden/L2/halyk-callai/evaluation/results/`. Они не заменяют новую проверку текущей версии и не измеряют качество на неизвестных данных.
+
+## 16. Развёртывание
+
+Публичная deployed-версия в текущем репозитории не указана.
+
+Конфигурации CI/CD и готового production-развёртывания в отслеживаемых файлах не обнаружены. Локальные адреса выше предназначены для демонстрации на машине запуска.
+
+## 17. Статус проекта
+
+Реализован локальный прототип полного диалога: интерфейс → AI-маршрутизация → проверяемая бизнес-логика → mock-операция или справочный ответ → история и журнал супервизора. Есть голосовой ввод и синтез речи, подтверждение действий и сохранение состояния.
+
+Для демонстрации необходимо настроить доступ к AI API; встроенный датасет выбирается автоматически. Для реального использования потребуются настоящие интеграции, проверка личности и права доступа, подготовка инфраструктуры и отдельная проверка качества моделей.

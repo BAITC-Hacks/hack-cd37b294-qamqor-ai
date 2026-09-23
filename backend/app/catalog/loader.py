@@ -7,7 +7,7 @@ from datetime import date
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_DATASET = PROJECT_ROOT.parent / "case_2" / "voice_router_dataset"
+DEFAULT_DATASET = PROJECT_ROOT / "golden" / "L2" / "case_2" / "voice_router_dataset"
 JSON_FILES = ("scenarios.json", "slots.json", "actions.json", "knowledge_base.json",
               "mock_backend.json", "dev_utterances.json", "dialogs_sample.json")
 
