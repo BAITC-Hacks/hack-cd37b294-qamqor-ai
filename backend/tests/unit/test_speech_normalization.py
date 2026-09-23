@@ -138,6 +138,35 @@ def test_markdown_table_syntax_and_standalone_metadata_object_are_removed():
     assert all(value not in result for value in ("|", "---", "scenario", "SC01", "confidence", "0.98"))
 
 
-@pytest.mark.parametrize("language,expected", [("ru", "с 09:00 до 18:00"), ("kk", "09:00 мен 18:00 аралығы")])
+@pytest.mark.parametrize("language,expected", [("ru", "с 09:00 до 18:00"), ("kk", "сағат тоғыздан он сегізге дейін")])
 def test_clock_range_preserves_both_endpoints_and_gives_tts_grammatical_context(language, expected):
     assert normalize_speech("09:00-18:00", language) == expected
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("10:00-15:00", "сағат оннан он беске дейін"),
+    ("Сағат 20:00–23:00", "сағат жиырмадан жиырма үшке дейін"),
+    ("00:00—01:00", "сағат нөлден бірге дейін"),
+    ("сағат 09:00-ден 18:00-ге дейін", "сағат тоғыздан он сегізге дейін"),
+    ("09:05-18:30", "сағат тоғыздан бес минут өткеннен сағат он сегізден отыз минут өткенге дейін"),
+    ("09:00-18:05", "сағат тоғыздан сағат он сегізден бес минут өткенге дейін"),
+    ("09:05-18:00", "сағат тоғыздан бес минут өткеннен сағат он сегізге дейін"),
+])
+def test_kazakh_clock_ranges_are_fully_spelled_without_losing_hours_or_minutes(text, expected):
+    assert normalize_speech(text, "kk") == expected
+
+
+def test_kazakh_existing_hour_label_is_not_duplicated():
+    assert normalize_speech("Кездесу сағат 09:05.", "kk") == "Кездесу сағат тоғыз нөл бес."
+
+
+def test_kazakh_actual_office_answer_has_no_numeric_time_left_for_tts():
+    text = "Almaty: Abai Ave 150. Жұмыс уақыты: Mon-Fri 09:00-18:00, Sat 10:00-15:00."
+    assert normalize_speech(text, "kk") == (
+        "Алматы: Абай даңғылы жүз елу. Жұмыс уақыты: дүйсенбіден жұмаға дейін "
+        "сағат тоғыздан он сегізге дейін, сенбі сағат оннан он беске дейін."
+    )
+
+
+def test_kazakh_invalid_time_range_is_preserved_without_guessing():
+    assert normalize_speech("сағат 25:00-18:00", "kk") == "сағат 25:00-18:00"

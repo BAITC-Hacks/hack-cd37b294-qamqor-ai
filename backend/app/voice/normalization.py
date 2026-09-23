@@ -102,6 +102,21 @@ def _identifier(value: str, language: str) -> str:
     ) for segment in value.split("-"))
 
 
+def _kk_hour_case(hour: int, destination: bool = False) -> str:
+    """Inflect the final word of a validated 24-hour clock value."""
+    forms = {
+        "нөл": ("нөлден", "нөлге"), "бір": ("бірден", "бірге"),
+        "екі": ("екіден", "екіге"), "үш": ("үштен", "үшке"),
+        "төрт": ("төрттен", "төртке"), "бес": ("бестен", "беске"),
+        "алты": ("алтыдан", "алтыға"), "жеті": ("жетіден", "жетіге"),
+        "сегіз": ("сегізден", "сегізге"), "тоғыз": ("тоғыздан", "тоғызға"),
+        "он": ("оннан", "онға"), "жиырма": ("жиырмадан", "жиырмаға"),
+    }
+    words = _integer(hour, "kk").split()
+    words[-1] = forms[words[-1]][int(destination)]
+    return " ".join(words)
+
+
 def normalize_speech(text: str, language: str) -> str:
     """Return speech text in the final response language; never detect language.
 
@@ -161,7 +176,8 @@ def normalize_speech(text: str, language: str) -> str:
     protect(r"(?<!\w)\d+(?:[.,]\d+){2,}(?!\w)", lambda match: match[0])
 
     def clock(match: re.Match) -> str:
-        hour, minute = map(int, match[0].split(":"))
+        raw = re.search(r"\d{1,2}:\d{2}", match[0])[0]
+        hour, minute = map(int, raw.split(":"))
         if hour > 23 or minute > 59:
             return match[0]
         if language == "kk":
@@ -172,13 +188,27 @@ def normalize_speech(text: str, language: str) -> str:
         first, last = match[1], match[2]
         if any(int(hour) > 23 or int(minute) > 59 for hour, minute in (value.split(":") for value in (first, last))):
             return match[0]
-        # As with calendar dates, let TTS inflect times in this explicit range
-        # construction. Digit words in nominative case after RU "с/до" would
-        # sound wrong. The exact clock values remain unchanged.
-        return f"с {first} до {last}" if language == "ru" else f"{first} мен {last} аралығы"
+        if language == "kk":
+            start_hour, start_minute = map(int, first.split(":"))
+            end_hour, end_minute = map(int, last.split(":"))
+            start = "сағат " + _kk_hour_case(start_hour)
+            if start_minute:
+                start += " " + _integer(start_minute, "kk") + " минут өткеннен"
+            end = _kk_hour_case(end_hour, destination=True)
+            if end_minute:
+                end = _kk_hour_case(end_hour) + " " + _integer(end_minute, "kk") + " минут өткенге"
+            if start_minute or end_minute:
+                end = "сағат " + end
+            return start + " " + end + " дейін"
+        # RU still uses explicit grammatical context; this fix targets KK.
+        return f"с {first} до {last}"
 
-    protect(r"(?<![\w:])(\d{1,2}:\d{2})\s*[-–—]\s*(\d{1,2}:\d{2})(?![\w:])", clock_range)
-    protect(r"(?<![\w:])\d{1,2}:\d{2}(?![\w:])", clock)
+    time_prefix = r"(?:сағат\s+)?" if language == "kk" else ""
+    if language == "kk":
+        # Already-written numeric suffixes must not survive as "тоғыз-ден".
+        protect(r"(?<![\w:])(?:сағат\s+)?(\d{1,2}:\d{2})\s*-?(?:дан|ден|тан|тен|нан|нен)\s+(?:сағат\s+)?(\d{1,2}:\d{2})\s*-?(?:ға|ге|қа|ке)\s+дейін\b", clock_range, re.I)
+    protect(r"(?<![\w:])" + time_prefix + r"(\d{1,2}:\d{2})\s*[-–—]\s*(\d{1,2}:\d{2})(?![\w:])", clock_range, re.I)
+    protect(r"(?<![\w:])" + time_prefix + r"\d{1,2}:\d{2}(?![\w:])", clock, re.I)
     # International numbers, and the standard eleven-digit local KZ form.
     protect(r"(?<!\w)\+\d(?:[ ()-]*\d){6,14}(?!\d)", lambda match: "плюс " + _digits(match[0], language))
     protect(r"(?<![\w+])8[ ()-]*7\d{2}[ ()-]*\d{3}[ ()-]*\d{2}[ ()-]*\d{2}(?!\w)", lambda match: _digits(match[0], language))
