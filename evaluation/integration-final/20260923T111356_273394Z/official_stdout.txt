@@ -1,0 +1,18 @@
+group                     n   primary_acc  full_match
+all                     104         0.962       0.952
+lang=kk                  45         0.956       0.956
+lang=mixed                7         1.000       0.857
+lang=ru                  52         0.962       0.962
+type=multi_intent        13         0.923       0.846
+type=out_of_scope         4         1.000       1.000
+type=single              84         0.964       0.964
+type=unclear              3         1.000       1.000
+
+intent_recall (multi-intent): 0.885
+
+Errors (5):
+  U040  expected=['SC20']  got=['SYS_UNCLEAR']  | Көлікті бағалауға қай күні әкелсем болады?
+  U043  expected=['SC22']  got=['SYS_UNCLEAR']  | Будет ли покрыто УЗИ по моей страховке?
+  U044  expected=['SC22']  got=['SYS_UNCLEAR']  | Менің сақтандыруым талдауларды өтей ме?
+  U083  expected=['SC13', 'SC20']  got=['SC13', 'SC33']  | Кеше аулада көлігімді біреу соғып кетіпті, КАСКО бар, и ещё подскажите, где у вас осмотр делают
+  U087  expected=['SC19', 'SC35']  got=['SYS_UNCLEAR']  | Отказали в выплате, и ваш оператор ещё и нагрубил

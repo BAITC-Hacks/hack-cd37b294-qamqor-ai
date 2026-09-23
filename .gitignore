@@ -39,3 +39,8 @@ evaluation/results/*/raw.jsonl
 evaluation/results/tests.xml
 **/raw.jsonl
 evaluation/experiments/**/tests.xml
+backend/runtime/
+runtime/
+frontend/node_modules/
+frontend/.next/
+frontend/*.tsbuildinfo

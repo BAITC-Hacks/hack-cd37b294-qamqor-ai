@@ -1,0 +1,22 @@
+{
+  "protected_files": {
+    "backend\\app\\catalog\\__init__.py": true,
+    "backend\\app\\catalog\\boundaries.py": true,
+    "backend\\app\\catalog\\compiler.py": true,
+    "backend\\app\\catalog\\loader.py": true,
+    "backend\\app\\config\\__init__.py": true,
+    "backend\\app\\config\\settings.py": true,
+    "backend\\app\\policy\\__init__.py": true,
+    "backend\\app\\policy\\decisions.py": true,
+    "backend\\app\\policy\\engine.py": true,
+    "backend\\app\\policy\\rules.py": true,
+    "backend\\app\\router\\__init__.py": true,
+    "backend\\app\\router\\llm.py": true,
+    "backend\\app\\router\\prompt.py": true,
+    "backend\\app\\router\\schemas.py": true,
+    "backend\\app\\router\\telemetry.py": true,
+    "backend\\app\\router\\validator.py": true
+  },
+  "all_match": true,
+  "runtime_model": "gpt-6-astra"
+}

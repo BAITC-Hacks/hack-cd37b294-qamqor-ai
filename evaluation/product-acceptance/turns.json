@@ -1,0 +1,416 @@
+[
+  {
+    "request": {
+      "conversation_id": "8585f876-f9e0-4d01-8962-8d2d734c419d",
+      "turn_id": "a23d7d64-d07c-42e1-b5a2-def4b90184f3",
+      "text": "Где находится ваш офис в Алматы?",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "8585f876-f9e0-4d01-8962-8d2d734c419d",
+      "turn_id": "a23d7d64-d07c-42e1-b5a2-def4b90184f3",
+      "text": "Офис в Almaty: Abai Ave 150. Часы работы: Mon-Fri 09:00-18:00, Sat 10:00-15:00.",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 6924.226000031922,
+        "policy_ms": 0.038300000596791506,
+        "backend_ms": 7.389499980490655,
+        "response_composition_ms": 0.017700018361210823,
+        "tts_ms": null,
+        "total_text_ms": 6941.278500016779
+      },
+      "citations": [
+        "knowledge_base.json#/offices/0"
+      ],
+      "event_id": "e8300aab-97fc-4a80-abd9-97aae26b79b8",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "01417b5d-2557-44a1-8c8d-dcef0da8b6d3",
+      "turn_id": "ef437822-b1ba-49d7-b803-7a7ffacf06d8",
+      "text": "Ақша списали, бірақ полис келмеді",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "01417b5d-2557-44a1-8c8d-dcef0da8b6d3",
+      "turn_id": "ef437822-b1ba-49d7-b803-7a7ffacf06d8",
+      "text": "Вам приходило подтверждение, что полис оформлен, или было только списание денег?",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 10261.771599994972,
+        "policy_ms": 0.020099978428333998,
+        "backend_ms": 0.000600004568696022,
+        "response_composition_ms": 0.003700028173625469,
+        "tts_ms": null,
+        "total_text_ms": 10269.819000037387
+      },
+      "citations": [],
+      "event_id": "0f1e9570-8880-48f3-8761-e3c16d73f7ae",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "01417b5d-2557-44a1-8c8d-dcef0da8b6d3",
+      "turn_id": "dbdced5d-7839-447a-ae27-9008047abe39",
+      "text": "Полис вообще не выпустился после оплаты. Мой телефон +77010000003, оплата была 30 сентября 2026 года.",
+      "expected_state_version": 1
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "01417b5d-2557-44a1-8c8d-dcef0da8b6d3",
+      "turn_id": "dbdced5d-7839-447a-ae27-9008047abe39",
+      "text": "По имеющимся данным, 30.09.2026 банк списал 31 200 за продление ОГПО для автомобиля 222ABC17, но полис не был выпущен. Срок решения неизвестен. В демосистеме действие зафиксировано, однако это не подтверждает реальную отправку обращения или выпуск полиса.",
+      "language": "ru",
+      "state_version": 2,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 9142.09880004637,
+        "policy_ms": 0.033999967854470015,
+        "backend_ms": 19.474499975331128,
+        "response_composition_ms": 4165.628999995533,
+        "tts_ms": null,
+        "total_text_ms": 13329.798499995377
+      },
+      "citations": [
+        "mock:72e66028-8bdf-4f7c-ac56-3fd7a186f6cd",
+        "mock:dd2ef77c-ead0-4cd0-8282-3bd013f05275"
+      ],
+      "event_id": "c7443dd9-b96e-4bed-992f-6abd7934333d",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "753fd261-6f32-4ffb-9c11-8c1dd5591d48",
+      "turn_id": "20b60c2f-3f4b-424c-af85-bc0079dbe857",
+      "text": "Хочу изменить email. Мой ИИН 850314300121, новый адрес first@example.com.",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "753fd261-6f32-4ffb-9c11-8c1dd5591d48",
+      "turn_id": "20b60c2f-3f4b-424c-af85-bc0079dbe857",
+      "text": "Подтвердите: изменить контактные данные в демо-системе. поле: email, новое значение: first@example.com. Нажмите «Подтвердить».",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": {
+        "operation_id": "cfc35fc1-4d9f-4f20-b2fe-f6957022de97",
+        "action": "update_contact",
+        "parameters": {
+          "contact_field": "email",
+          "new_value": "first@example.com",
+          "client_id": "C001"
+        },
+        "topic_id": "SC29",
+        "state_version": 1,
+        "status": "awaiting_confirmation"
+      },
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 7628.024699981324,
+        "policy_ms": 0.03360002301633358,
+        "backend_ms": 12.08389998646453,
+        "response_composition_ms": 0.021700048819184303,
+        "tts_ms": null,
+        "total_text_ms": 7649.412899976596
+      },
+      "citations": [],
+      "event_id": "e3dba8bf-76ff-4e69-b382-eb24dd9ebbfd",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "753fd261-6f32-4ffb-9c11-8c1dd5591d48",
+      "turn_id": "7cbb2fbf-780c-45c4-bd42-39438028a3c7",
+      "text": "Нет, ошибся: новый email second@example.com.",
+      "expected_state_version": 1
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "753fd261-6f32-4ffb-9c11-8c1dd5591d48",
+      "turn_id": "7cbb2fbf-780c-45c4-bd42-39438028a3c7",
+      "text": "Подтвердите: изменить контактные данные в демо-системе. поле: email, новое значение: second@example.com. Нажмите «Подтвердить».",
+      "language": "ru",
+      "state_version": 2,
+      "pending_action": {
+        "operation_id": "8c64b5f9-fa18-41ca-a03b-d812ce037fe6",
+        "action": "update_contact",
+        "parameters": {
+          "contact_field": "email",
+          "new_value": "second@example.com",
+          "client_id": "C001"
+        },
+        "topic_id": "SC29",
+        "state_version": 2,
+        "status": "awaiting_confirmation"
+      },
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 8540.097299963236,
+        "policy_ms": 0.03109994577243924,
+        "backend_ms": 11.032499955035746,
+        "response_composition_ms": 0.012999982573091984,
+        "tts_ms": null,
+        "total_text_ms": 8554.418799991254
+      },
+      "citations": [],
+      "event_id": "35bf8ba5-8b6f-4af6-a18b-cf3052aa17d0",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "753fd261-6f32-4ffb-9c11-8c1dd5591d48",
+      "turn_id": "43924ec2-0ede-471a-8609-bb2e22756037",
+      "text": "Подтверждаю",
+      "expected_state_version": 2,
+      "confirm_operation_id": "cfc35fc1-4d9f-4f20-b2fe-f6957022de97"
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "753fd261-6f32-4ffb-9c11-8c1dd5591d48",
+      "turn_id": "43924ec2-0ede-471a-8609-bb2e22756037",
+      "text": "Подтверждение устарело: данные или тема изменились. Проверьте новое предложение.",
+      "language": "ru",
+      "state_version": 3,
+      "pending_action": {
+        "operation_id": "8c64b5f9-fa18-41ca-a03b-d812ce037fe6",
+        "action": "update_contact",
+        "parameters": {
+          "contact_field": "email",
+          "new_value": "second@example.com",
+          "client_id": "C001"
+        },
+        "topic_id": "SC29",
+        "state_version": 3,
+        "status": "awaiting_confirmation"
+      },
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 6038.939799997024,
+        "policy_ms": 0.029699993319809437,
+        "backend_ms": 0.000700005330145359,
+        "response_composition_ms": 0.004599976819008589,
+        "tts_ms": null,
+        "total_text_ms": 6040.551299985964
+      },
+      "citations": [],
+      "event_id": "24fdd063-4ca8-4a8b-9920-ce78a3c1eb54",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "753fd261-6f32-4ffb-9c11-8c1dd5591d48",
+      "turn_id": "0dc358de-b7a1-4f79-843a-f278870d953f",
+      "text": "Подтверждаю",
+      "expected_state_version": 3,
+      "confirm_operation_id": "8c64b5f9-fa18-41ca-a03b-d812ce037fe6"
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "753fd261-6f32-4ffb-9c11-8c1dd5591d48",
+      "turn_id": "0dc358de-b7a1-4f79-843a-f278870d953f",
+      "text": "Контактные данные в демо-системе обновлены: second@example.com.",
+      "language": "ru",
+      "state_version": 4,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 8274.302900012117,
+        "policy_ms": 0.031000003218650818,
+        "backend_ms": 5.829899979289621,
+        "response_composition_ms": 0.014499993994832039,
+        "tts_ms": null,
+        "total_text_ms": 8283.279999974184
+      },
+      "citations": [
+        "mock:8c64b5f9-fa18-41ca-a03b-d812ce037fe6"
+      ],
+      "event_id": "1ba49695-9774-4724-a25c-e41a2c7d0b86",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "96f56416-b136-4c4f-bbf9-299a94f75fbd",
+      "turn_id": "c4dfc547-75ab-4c87-be6f-db18df61356c",
+      "text": "Хочу расторгнуть полис SQ-OGPO-105120: продал машину.",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "96f56416-b136-4c4f-bbf9-299a94f75fbd",
+      "turn_id": "c4dfc547-75ab-4c87-be6f-db18df61356c",
+      "text": "Подтвердите: расторгнуть полис в демо-системе. полис: SQ-OGPO-105120, причина: продал машину. Нажмите «Подтвердить».",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": {
+        "operation_id": "9db7ff93-76ba-4982-837c-253ba11e6f07",
+        "action": "cancel_policy",
+        "parameters": {
+          "policy_number": "SQ-OGPO-105120",
+          "cancel_reason": "продал машину"
+        },
+        "topic_id": "SC28",
+        "state_version": 1,
+        "status": "awaiting_confirmation"
+      },
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 8259.029700013343,
+        "policy_ms": 0.037999998312443495,
+        "backend_ms": 3.652899991720915,
+        "response_composition_ms": 0.01179997343569994,
+        "tts_ms": null,
+        "total_text_ms": 8274.274399969727
+      },
+      "citations": [],
+      "event_id": "3b9320a9-9ea2-432f-b965-a7dbd2f3a345",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "96f56416-b136-4c4f-bbf9-299a94f75fbd",
+      "turn_id": "3a252ec3-7401-438b-aaa1-3ff070d31717",
+      "text": "Кстати, где ваш офис в Алматы?",
+      "expected_state_version": 1
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "96f56416-b136-4c4f-bbf9-299a94f75fbd",
+      "turn_id": "3a252ec3-7401-438b-aaa1-3ff070d31717",
+      "text": "Офис в Almaty: Abai Ave 150. Часы работы: Mon-Fri 09:00-18:00, Sat 10:00-15:00.",
+      "language": "ru",
+      "state_version": 2,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 5967.965300020296,
+        "policy_ms": 0.03290001768618822,
+        "backend_ms": 3.616799949668348,
+        "response_composition_ms": 0.018600025214254856,
+        "tts_ms": null,
+        "total_text_ms": 5973.288999986835
+      },
+      "citations": [
+        "knowledge_base.json#/offices/0"
+      ],
+      "event_id": "635c1813-60b8-4f0f-a916-c2844a1c353a",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "96f56416-b136-4c4f-bbf9-299a94f75fbd",
+      "turn_id": "4728afb0-7650-4976-927b-0b066a948be6",
+      "text": "Вернёмся к расторжению моего полиса.",
+      "expected_state_version": 2
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "96f56416-b136-4c4f-bbf9-299a94f75fbd",
+      "turn_id": "4728afb0-7650-4976-927b-0b066a948be6",
+      "text": "Подтвердите: расторгнуть полис в демо-системе. полис: SQ-OGPO-105120, причина: продал машину. Нажмите «Подтвердить».",
+      "language": "ru",
+      "state_version": 3,
+      "pending_action": {
+        "operation_id": "2e84db3e-fc4a-4f13-a632-74383aaf961e",
+        "action": "cancel_policy",
+        "parameters": {
+          "policy_number": "SQ-OGPO-105120",
+          "cancel_reason": "продал машину"
+        },
+        "topic_id": "SC28",
+        "state_version": 3,
+        "status": "awaiting_confirmation"
+      },
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 5789.418099971954,
+        "policy_ms": 0.04509999416768551,
+        "backend_ms": 0.12580002658069134,
+        "response_composition_ms": 0.013300043065100908,
+        "tts_ms": null,
+        "total_text_ms": 5791.710399964359
+      },
+      "citations": [],
+      "event_id": "550a2308-6b2a-4272-ac04-3ec7fad1e23a",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "48a07e79-f966-4c48-87c9-34c1b63a7919",
+      "turn_id": "a3fe8704-c275-4ee1-9aaf-de68c01e7755",
+      "text": "Алматыдағы кеңсеңіз қайда орналасқан? Қазақша жауап беріңізші.",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "48a07e79-f966-4c48-87c9-34c1b63a7919",
+      "turn_id": "a3fe8704-c275-4ee1-9aaf-de68c01e7755",
+      "text": "Almaty: Abai Ave 150. Жұмыс уақыты: Mon-Fri 09:00-18:00, Sat 10:00-15:00.",
+      "language": "kk",
+      "state_version": 1,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 7626.88789999811,
+        "policy_ms": 0.031200004741549492,
+        "backend_ms": 3.1863999902270734,
+        "response_composition_ms": 0.018499966245144606,
+        "tts_ms": null,
+        "total_text_ms": 7639.462799998
+      },
+      "citations": [
+        "knowledge_base.json#/offices/0"
+      ],
+      "event_id": "45ef4306-e6eb-4f9c-9ef8-ae493db566b2",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "dab97175-9999-4d93-b92d-139126513874",
+      "turn_id": "b4ffa7ac-9396-4682-b69b-d56e99cd6ae2",
+      "text": "Хочу поменять email.",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "dab97175-9999-4d93-b92d-139126513874",
+      "turn_id": "b4ffa7ac-9396-4682-b69b-d56e99cd6ae2",
+      "text": "Назовите новые данные.",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 6035.798299999442,
+        "policy_ms": 0.03160000778734684,
+        "backend_ms": 0.03679998917505145,
+        "response_composition_ms": 0.00300002284348011,
+        "tts_ms": null,
+        "total_text_ms": 6043.966700031888
+      },
+      "citations": [],
+      "event_id": "dba7bc0f-052a-46bc-be91-6a2d69a6e154",
+      "mock_backend": true
+    }
+  }
+]

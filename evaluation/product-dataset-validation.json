@@ -1,0 +1,26 @@
+{
+  "valid": true,
+  "errors": [],
+  "warnings": [
+    "D01: 12 messages; preserve original, count client turns separately"
+  ],
+  "counts": {
+    "scenarios": 40,
+    "system_intents": 3,
+    "slots": 43,
+    "actions": 31,
+    "official_examples": 104,
+    "dialogs": 10
+  },
+  "sha256": {
+    "scenarios.json": "6d057b81df7612fc7aa6528a200c0f933729c0c65c02f991a6af30d40d9bb6c4",
+    "slots.json": "56d74f31d257577bf9cd7f70eb337bdfe05fc4c2c632339a56bc4af1a23ab347",
+    "actions.json": "2e5b0b66a10fa9fb85fbe79fefb56513eb0aa413519b6ea3ec8a84173676f03f",
+    "knowledge_base.json": "b6f2224b539d88e625c988af742010fa8ecc4eca8e60de67d40d44c1320e4ce6",
+    "mock_backend.json": "9f488c7ffc7ea90e36f3e9d3e02429d624be225082a63ecc0d63a95cc0813152",
+    "dev_utterances.json": "e09e4a557a24e35e045e62628ed62d55654d5b3a252aa22622d945710795013e",
+    "dialogs_sample.json": "6560f8db98e3046179f4345b3e4efec53c907a24f60a89ffb3c4c43ad3679349",
+    "evaluate.py": "d0b2dbb5043e0c424ab3c7a43ef3cec2249a30a630ce71c40e823608b671c10f"
+  },
+  "dataset_path": "C:\\HackAlem\\PHOENIX-PATCH-WEDGE-FORGE-v1\\case_2\\voice_router_dataset"
+}

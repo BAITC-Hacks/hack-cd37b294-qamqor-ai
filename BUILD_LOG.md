@@ -75,3 +75,23 @@ scripts/                      validate_dataset.py, smoke_test.py, run.ps1
 B0–B5 is **executed**. Latest official run: `20260923T095132_960641Z`, 104/104 primary and full-match, 26/26 multi-intent recall, no final schema/API/system-intent errors. One schema repair succeeded. Details and first-run comparison: `evaluation/BASELINE_NOTES.md`. These are reused development-set results, not hidden-test accuracy. Run `.\scripts\run.ps1 baseline` to make a fresh complete inference run.
 
 Next measured issue: router latency (mean 9.35 s, p95 13.23 s) and remaining unnecessary repair. Investigate token usage and evaluate compact output instructions without dropping catalog entries or evidence. B6+ (persistent conversation service, complete session/chat API, action executor, KB answers, supervisor UI and voice) remains unimplemented; no product-level or voice completion is claimed.
+
+## 2026-09-23 — frozen L2 product integration B6–B14
+
+User stopped L3/L4 optimization. Preserved exact L2 under golden/L2, including historical 104/104 scorer output, raw requests and manifests; restored 16 protected source files. Their SHA256 hashes remain identical. L4 was stopped and marked incomplete; no score is inferred from partial output.
+
+Implemented and integrated SQLite sessions and operation ledger, topic state, scoped canonical slots and corrections, all 31 mock backend actions, explicit version-bound confirmation, KB lookup, RU/KK responses, asynchronous SQLite/JSONL traces, customer and supervisor Next.js pages, six live demo shortcuts, final-utterance voice adapters and one-command Windows startup.
+
+Measured defect and fix: ignored local .env had CALLAI_MODEL=gpt-6-luna. First integration evaluation (20260923T111356_273394Z) was therefore NOT golden L2: full-match 99/104, recall 23/26. Preserved it and the failed live correction/restore traces. Restored CALLAI_MODEL=gpt-6-astra as explicitly required by golden configuration; did not modify router prompt, policy, boundary rules or output schema. Added startup rejection of a mismatched runtime model.
+
+Real final official regression: evaluation/integration-final-astra/20260923T111919_964539Z. Primary 104/104, full-match 104/104, recall 26/26. Mean 8254.112 ms, P95 13129.871 ms. Zero final schema/API/system-intent failures; one successful schema repair. Original official scorer executed unchanged. Boundary probe 20260923T112357_236619Z: PASS, CLARIFY, execution_allowed=false.
+
+Real product acceptance: six paths pass, 12 actual L2 turns, mean total text latency 7899.272 ms. Includes canonical office response, ambiguous payment followed by actual backend lookup, corrected email/evidence, stale confirmation rejection, actual confirmation, exact replay, SWITCH/RESTORE, Kazakh response and missing-slot collection. Final guard fixes retain unresolved secondary intents and record backend failures; covered by integration regressions.
+
+Voice probe: real OpenAI audio requests and real app endpoints, generated audio fixtures. RU 11029.266 ms and KK 9794.209 ms end-to-end processing. Initial Kazakh autodetection produced Latin-script noise; supplying the explicit UI RU/KK hint corrected script/language in the rerun. Output MP3 and transcripts retained under evaluation/voice-probe. Not a human microphone/speaker or broad speech accuracy test. Pipecat optional bridge is unexecuted; actual working transport is browser MediaRecorder -> final STT -> common chat -> TTS.
+
+Browser found a React cleanup exception from implicitly returning scrollIntoView; changed the effect to return nothing explicitly. Actual browser rerun completed a real boundary query and showed the real supervisor evidence. Fixed page-level scrolling and checked desktop and 390x844 mobile layout; mobile document matched viewport with composer visible. Screenshots: docs/supervisor.png, docs/customer.png, docs/customer-mobile.png.
+
+Executed validation: 131 pytest PASS (evaluation/product-tests.xml), one Node playback interruption test PASS, full dataset validator PASS with only original D01 warning, compileall PASS, pip check PASS, Next.js production build PASS, HTTP health/readiness/frontend smoke PASS, .\scripts\run.ps1 demo actually started both servers. Runtime /ready verifies model gpt-6-astra. Current golden hash verification: 16/16 match.
+
+Limits: all business execution is mock; outbox records are not real delivery. Calendar slots are a documented simulation because starter kit has no availability calendar. No production authentication or identity proofing; bind only loopback. Human-microphone and noisy/multi-speaker Kazakh tests remain unverified. No synthetic training corpus generated. No routing latency experiment added.

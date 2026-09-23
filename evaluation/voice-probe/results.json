@@ -1,0 +1,74 @@
+[
+  {
+    "language": "ru",
+    "input_text": "Где находится ваш офис в Алматы?",
+    "source": "synthetic TTS fixture, not live microphone",
+    "stt": {
+      "text": "Где находится ваш офис в Алма-Аты?",
+      "final": true,
+      "latency_ms": 1423.1185999815352
+    },
+    "chat": {
+      "conversation_id": "541637e2-50c1-4b67-8439-be94ff381d5c",
+      "turn_id": "e217b389-f2a5-4c9a-9232-42e5b62bef33",
+      "text": "Офис в Almaty: Abai Ave 150. Часы работы: Mon-Fri 09:00-18:00, Sat 10:00-15:00.",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": 1423.1185999815352,
+        "router_ms": 6522.5612000213005,
+        "policy_ms": 0.03749999450519681,
+        "backend_ms": 2.410300017800182,
+        "response_composition_ms": 0.02519995905458927,
+        "tts_ms": null,
+        "total_text_ms": 6533.203500031959
+      },
+      "citations": [
+        "knowledge_base.json#/offices/0"
+      ],
+      "event_id": "0206bd63-f82a-487a-9236-dc559dcae506",
+      "mock_backend": true
+    },
+    "status": "PASS",
+    "output_audio_bytes": 197760,
+    "tts_ms": 3001.948099990841,
+    "total_voice_processing_ms": 11029.266100027598
+  },
+  {
+    "language": "kk",
+    "input_text": "Алматыдағы кеңсеңіз қайда орналасқан?",
+    "source": "synthetic TTS fixture, not live microphone",
+    "stt": {
+      "text": "Алматыдағы кенсеңіз қайда орналасқан!",
+      "final": true,
+      "latency_ms": 1811.9177999906242
+    },
+    "chat": {
+      "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+      "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+      "text": "Almaty: Abai Ave 150. Жұмыс уақыты: Mon-Fri 09:00-18:00, Sat 10:00-15:00.",
+      "language": "kk",
+      "state_version": 1,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": 1811.9177999906242,
+        "router_ms": 5902.277300017886,
+        "policy_ms": 0.0317999511025846,
+        "backend_ms": 3.1032999977469444,
+        "response_composition_ms": 0.016600009985268116,
+        "tts_ms": null,
+        "total_text_ms": 5914.3837000010535
+      },
+      "citations": [
+        "knowledge_base.json#/offices/0"
+      ],
+      "event_id": "1dbb8af4-e576-4a36-8188-a4023ddc70ac",
+      "mock_backend": true
+    },
+    "status": "PASS",
+    "output_audio_bytes": 141696,
+    "tts_ms": 2014.3132000230253,
+    "total_voice_processing_ms": 9794.208600011189
+  }
+]

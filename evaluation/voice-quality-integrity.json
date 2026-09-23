@@ -1,0 +1,13 @@
+{
+  "golden_files_checked": 16,
+  "golden_files_unchanged": true,
+  "preexisting_file_changes": [
+    "backend/app/voice/providers.py",
+    "backend/app/voice/routes.py",
+    "frontend/app/page.tsx",
+    "frontend/lib/playback.mjs",
+    "frontend/tests/playback.test.mjs",
+    ".env.example"
+  ],
+  "nonvoice_backend_unchanged": true
+}

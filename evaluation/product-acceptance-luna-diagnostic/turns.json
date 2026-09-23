@@ -1,0 +1,333 @@
+[
+  {
+    "request": {
+      "conversation_id": "5762bfb6-0296-4ac2-9757-2d993d55906c",
+      "turn_id": "4608c04b-de98-4c53-bcc2-6527f37946a8",
+      "text": "Где находится ваш офис в Алматы?",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "5762bfb6-0296-4ac2-9757-2d993d55906c",
+      "turn_id": "4608c04b-de98-4c53-bcc2-6527f37946a8",
+      "text": "Офис в Almaty: Abai Ave 150. Часы работы: Mon-Fri 09:00-18:00, Sat 10:00-15:00.",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 3659.6523000043817,
+        "policy_ms": 0.036999990697950125,
+        "backend_ms": 5.705000017769635,
+        "response_composition_ms": 0.01580000389367342,
+        "tts_ms": null,
+        "total_text_ms": 3673.829899984412
+      },
+      "citations": [
+        "knowledge_base.json#/offices/0"
+      ],
+      "event_id": "f002615b-9ae5-4a6a-aaa3-4f2fb9627ff5",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "15d4ec78-1e15-4c77-bc4b-f2ea8fc147da",
+      "turn_id": "a4e10efb-090e-4917-bc84-1f67df3983da",
+      "text": "Ақша списали, бірақ полис келмеді",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "15d4ec78-1e15-4c77-bc4b-f2ea8fc147da",
+      "turn_id": "a4e10efb-090e-4917-bc84-1f67df3983da",
+      "text": "Уточните, пожалуйста: полис уже оформлен, но не пришёл, или после списания он не был оформлен?",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 7657.1652999846265,
+        "policy_ms": 0.039700011257082224,
+        "backend_ms": 0.0008999486453831196,
+        "response_composition_ms": 0.005199981387704611,
+        "tts_ms": null,
+        "total_text_ms": 7666.7459000018425
+      },
+      "citations": [],
+      "event_id": "ee401920-e4d9-4caf-ac39-ffd8327efa84",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "15d4ec78-1e15-4c77-bc4b-f2ea8fc147da",
+      "turn_id": "70ebc979-54ac-4cd4-b5ea-4d0e2c08fdbe",
+      "text": "Полис вообще не выпустился после оплаты. Мой телефон +77010000003, оплата была 30 сентября 2026 года.",
+      "expected_state_version": 1
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "15d4ec78-1e15-4c77-bc4b-f2ea8fc147da",
+      "turn_id": "70ebc979-54ac-4cd4-b5ea-4d0e2c08fdbe",
+      "text": "По продлению ОС ГПО для автомобиля 222ABC17: оплата списана, но полис не выпущен. В демо зарегистрировано обращение; фактическая отправка или выпуск полиса не подтверждены.",
+      "language": "ru",
+      "state_version": 2,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 24775.558400026057,
+        "policy_ms": 0.05169998621568084,
+        "backend_ms": 22.196199977770448,
+        "response_composition_ms": 2251.577199960593,
+        "tts_ms": null,
+        "total_text_ms": 27051.973399997223
+      },
+      "citations": [
+        "mock:c911dffb-4ae5-4cf6-8b00-39a14f14720a",
+        "mock:f9c292db-3a64-4f4c-ab08-bb623742e933"
+      ],
+      "event_id": "2250c1ec-a5a7-4009-b00f-5266c062e72e",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "34552d7a-45c5-456c-bddd-23f4a813385e",
+      "turn_id": "bdb99396-f4d3-4ca6-8b88-c7f47673fd2a",
+      "text": "Хочу изменить email. Мой ИИН 850314300121, новый адрес first@example.com.",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "34552d7a-45c5-456c-bddd-23f4a813385e",
+      "turn_id": "bdb99396-f4d3-4ca6-8b88-c7f47673fd2a",
+      "text": "Подтвердите: изменить контактные данные в демо-системе. поле: email, новое значение: first@example.com. Нажмите «Подтвердить».",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": {
+        "operation_id": "4d9a705d-ae77-4598-9df0-9933360cd40b",
+        "action": "update_contact",
+        "parameters": {
+          "contact_field": "email",
+          "new_value": "first@example.com",
+          "client_id": "C001"
+        },
+        "topic_id": "SC29",
+        "state_version": 1,
+        "status": "awaiting_confirmation"
+      },
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 5310.87759998627,
+        "policy_ms": 0.042199972085654736,
+        "backend_ms": 2.454000001307577,
+        "response_composition_ms": 0.01799996243789792,
+        "tts_ms": null,
+        "total_text_ms": 5321.232400019653
+      },
+      "citations": [],
+      "event_id": "3460211d-7bb7-43c7-b0e6-f33b2bb27b24",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "34552d7a-45c5-456c-bddd-23f4a813385e",
+      "turn_id": "718a6b8e-a0cf-457a-a16c-012ae8e46f29",
+      "text": "Нет, ошибся: новый email second@example.com.",
+      "expected_state_version": 1
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "34552d7a-45c5-456c-bddd-23f4a813385e",
+      "turn_id": "718a6b8e-a0cf-457a-a16c-012ae8e46f29",
+      "text": "Этот вопрос не входит в наши страховые услуги.",
+      "language": "ru",
+      "state_version": 2,
+      "pending_action": {
+        "operation_id": "4d9a705d-ae77-4598-9df0-9933360cd40b",
+        "action": "update_contact",
+        "parameters": {
+          "contact_field": "email",
+          "new_value": "first@example.com",
+          "client_id": "C001"
+        },
+        "topic_id": "SC29",
+        "state_version": 2,
+        "status": "awaiting_confirmation"
+      },
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 12193.223599984776,
+        "policy_ms": 0.07399998139590025,
+        "backend_ms": 0.001700012944638729,
+        "response_composition_ms": 0.009199953638017178,
+        "tts_ms": null,
+        "total_text_ms": 12196.726900001522
+      },
+      "citations": [],
+      "event_id": "ee480754-374f-4894-be0d-9cf8211acfe1",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "beae1e45-c457-4042-85f2-47e81c845117",
+      "turn_id": "07f4d42c-4ae6-4e08-becf-27ac137f6445",
+      "text": "Хочу расторгнуть полис SQ-OGPO-105120: продал машину.",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "beae1e45-c457-4042-85f2-47e81c845117",
+      "turn_id": "07f4d42c-4ae6-4e08-becf-27ac137f6445",
+      "text": "Подтвердите: расторгнуть полис в демо-системе. полис: SQ-OGPO-105120, причина: продал машину. Нажмите «Подтвердить».",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": {
+        "operation_id": "7c3c4b81-d2cb-45bb-82b7-11e775cae059",
+        "action": "cancel_policy",
+        "parameters": {
+          "policy_number": "SQ-OGPO-105120",
+          "cancel_reason": "продал машину"
+        },
+        "topic_id": "SC28",
+        "state_version": 1,
+        "status": "awaiting_confirmation"
+      },
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 3917.0674000051804,
+        "policy_ms": 0.032299954909831285,
+        "backend_ms": 2.044699969701469,
+        "response_composition_ms": 0.015099998563528061,
+        "tts_ms": null,
+        "total_text_ms": 3927.5159999961033
+      },
+      "citations": [],
+      "event_id": "21bd1dad-7a22-47af-b14c-939878e02d90",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "beae1e45-c457-4042-85f2-47e81c845117",
+      "turn_id": "365fb519-1ab6-4a70-b991-dbcc5f125d7a",
+      "text": "Кстати, где ваш офис в Алматы?",
+      "expected_state_version": 1
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "beae1e45-c457-4042-85f2-47e81c845117",
+      "turn_id": "365fb519-1ab6-4a70-b991-dbcc5f125d7a",
+      "text": "Офис в Almaty: Abai Ave 150. Часы работы: Mon-Fri 09:00-18:00, Sat 10:00-15:00.",
+      "language": "ru",
+      "state_version": 2,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 4301.861399959307,
+        "policy_ms": 0.05660002352669835,
+        "backend_ms": 5.7536999811418355,
+        "response_composition_ms": 0.02010003663599491,
+        "tts_ms": null,
+        "total_text_ms": 4309.411900001578
+      },
+      "citations": [
+        "knowledge_base.json#/offices/0"
+      ],
+      "event_id": "c6b7c95a-d8d2-48b7-8567-9f4bf2925c46",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "beae1e45-c457-4042-85f2-47e81c845117",
+      "turn_id": "735865a2-38c1-40a5-b2cf-af1ed2ea8a06",
+      "text": "Вернёмся к расторжению моего полиса.",
+      "expected_state_version": 2
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "beae1e45-c457-4042-85f2-47e81c845117",
+      "turn_id": "735865a2-38c1-40a5-b2cf-af1ed2ea8a06",
+      "text": "Этот вопрос не входит в наши страховые услуги.",
+      "language": "ru",
+      "state_version": 3,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 12686.186000006273,
+        "policy_ms": 0.027099973522126675,
+        "backend_ms": 0.000900006853044033,
+        "response_composition_ms": 0.004099973011761904,
+        "tts_ms": null,
+        "total_text_ms": 12689.324899984058
+      },
+      "citations": [],
+      "event_id": "5b90c6ab-c04c-463a-a4cb-86aa9b5d0db3",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "41f17da3-239e-4e75-a6bd-a71819ddc9dd",
+      "turn_id": "186dcd2e-d6bc-4877-9ed8-37d4ea9fb6ff",
+      "text": "Алматыдағы кеңсеңіз қайда орналасқан? Қазақша жауап беріңізші.",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "41f17da3-239e-4e75-a6bd-a71819ddc9dd",
+      "turn_id": "186dcd2e-d6bc-4877-9ed8-37d4ea9fb6ff",
+      "text": "Almaty: Abai Ave 150. Жұмыс уақыты: Mon-Fri 09:00-18:00, Sat 10:00-15:00.",
+      "language": "kk",
+      "state_version": 1,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 3502.289100026246,
+        "policy_ms": 0.031100003980100155,
+        "backend_ms": 2.5825999910011888,
+        "response_composition_ms": 0.041499966755509377,
+        "tts_ms": null,
+        "total_text_ms": 3514.5687999902293
+      },
+      "citations": [
+        "knowledge_base.json#/offices/0"
+      ],
+      "event_id": "afe94f60-83b2-47e1-b47b-4bb35e753f93",
+      "mock_backend": true
+    }
+  },
+  {
+    "request": {
+      "conversation_id": "18360781-38d2-4136-9cbb-5d33459215b8",
+      "turn_id": "f3d8b9d6-c0f7-4d56-8ee7-0d5655a2246c",
+      "text": "Хочу поменять email.",
+      "expected_state_version": 0
+    },
+    "status": 200,
+    "response": {
+      "conversation_id": "18360781-38d2-4136-9cbb-5d33459215b8",
+      "turn_id": "f3d8b9d6-c0f7-4d56-8ee7-0d5655a2246c",
+      "text": "Назовите новые данные.",
+      "language": "ru",
+      "state_version": 1,
+      "pending_action": null,
+      "latency": {
+        "stt_ms": null,
+        "router_ms": 3555.699899967294,
+        "policy_ms": 0.030099996365606785,
+        "backend_ms": 0.025999965146183968,
+        "response_composition_ms": 0.002200016751885414,
+        "tts_ms": null,
+        "total_text_ms": 3565.6308000325225
+      },
+      "citations": [],
+      "event_id": "c65f36d6-6650-479a-8f1e-b325689fa5e0",
+      "mock_backend": true
+    }
+  }
+]

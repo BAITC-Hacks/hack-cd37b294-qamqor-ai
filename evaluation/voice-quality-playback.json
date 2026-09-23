@@ -1,0 +1,226 @@
+[
+  {
+    "language": "ru",
+    "conversation_id": "541637e2-50c1-4b67-8439-be94ff381d5c",
+    "turn_id": "e217b389-f2a5-4c9a-9232-42e5b62bef33",
+    "original_state_version": 1,
+    "current_state_version": 1,
+    "events": [
+      {
+        "event_id": "e68f0039-d9d5-44a3-a150-13832ae3e3b3",
+        "conversation_id": "541637e2-50c1-4b67-8439-be94ff381d5c",
+        "turn_id": "e217b389-f2a5-4c9a-9232-42e5b62bef33",
+        "timestamp": "2026-09-23T11:47:20.158515+00:00",
+        "type": "tts_playback",
+        "latency": {
+          "response_ready_to_first_byte_ms": 1364.7999999523163,
+          "first_playback_ms": 1380.0999999642372,
+          "complete_stream_ms": 2667.199999988079
+        },
+        "streaming": true,
+        "state_version": 1,
+        "measurement": "browser playing event; response-ready clock; client reported"
+      },
+      {
+        "event_id": "9313dd7e-40e4-41b7-b4be-9677b89cc0d5",
+        "conversation_id": "541637e2-50c1-4b67-8439-be94ff381d5c",
+        "turn_id": "e217b389-f2a5-4c9a-9232-42e5b62bef33",
+        "timestamp": "2026-09-23T11:47:20.142984+00:00",
+        "type": "tts",
+        "latency": {
+          "tts_first_byte_ms": 1337.9256000043824,
+          "tts_ms": 2653.722499962896
+        },
+        "bytes": 233856,
+        "state_version": 1,
+        "streaming": true,
+        "outcome": "complete",
+        "language": "ru",
+        "voice": "coral"
+      },
+      {
+        "event_id": "b359679d-38b4-434c-b638-dbc5392e0da2",
+        "conversation_id": "541637e2-50c1-4b67-8439-be94ff381d5c",
+        "turn_id": "e217b389-f2a5-4c9a-9232-42e5b62bef33",
+        "timestamp": "2026-09-23T11:47:18.875556+00:00",
+        "type": "tts_playback",
+        "latency": {
+          "response_ready_to_first_byte_ms": 1364.7999999523163,
+          "first_playback_ms": 1380.0999999642372
+        },
+        "streaming": true,
+        "state_version": 1,
+        "measurement": "browser playing event; response-ready clock; client reported"
+      },
+      {
+        "event_id": "25b45720-dbde-49cd-8fa8-155b7b0582fd",
+        "conversation_id": "541637e2-50c1-4b67-8439-be94ff381d5c",
+        "turn_id": "e217b389-f2a5-4c9a-9232-42e5b62bef33",
+        "timestamp": "2026-09-23T11:47:18.857947+00:00",
+        "type": "tts_playback",
+        "latency": {
+          "response_ready_to_first_byte_ms": 1364.7999999523163
+        },
+        "streaming": true,
+        "state_version": 1,
+        "measurement": "browser playing event; response-ready clock; client reported"
+      }
+    ]
+  },
+  {
+    "language": "kk",
+    "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+    "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+    "original_state_version": 1,
+    "current_state_version": 1,
+    "events": [
+      {
+        "event_id": "1dbce474-1bac-4cb9-a016-763551ef9472",
+        "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+        "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+        "timestamp": "2026-09-23T11:48:31.680349+00:00",
+        "type": "tts",
+        "latency": {
+          "tts_first_byte_ms": 730.3489000187255,
+          "tts_ms": 1242.7818999858573
+        },
+        "bytes": 15360,
+        "state_version": 1,
+        "streaming": true,
+        "outcome": "interrupted",
+        "language": "kk",
+        "voice": "coral"
+      },
+      {
+        "event_id": "683c5b54-a463-4b71-a10d-eb24c0604b95",
+        "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+        "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+        "timestamp": "2026-09-23T11:48:31.517429+00:00",
+        "type": "tts_playback",
+        "latency": {
+          "response_ready_to_first_byte_ms": 750.5999999642372,
+          "first_playback_ms": 1078.800000011921
+        },
+        "streaming": true,
+        "state_version": 1,
+        "measurement": "browser playing event; response-ready clock; client reported"
+      },
+      {
+        "event_id": "30eb5fe8-2c5a-4af0-8149-a322afac18e5",
+        "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+        "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+        "timestamp": "2026-09-23T11:48:31.187107+00:00",
+        "type": "tts_playback",
+        "latency": {
+          "response_ready_to_first_byte_ms": 750.5999999642372
+        },
+        "streaming": true,
+        "state_version": 1,
+        "measurement": "browser playing event; response-ready clock; client reported"
+      },
+      {
+        "event_id": "b6c3db06-f09f-409d-8a82-73a2b1848ee4",
+        "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+        "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+        "timestamp": "2026-09-23T11:48:30.447928+00:00",
+        "type": "tts",
+        "latency": {
+          "tts_first_byte_ms": 787.7556000021286,
+          "tts_ms": 5337.636799959
+        },
+        "bytes": 111744,
+        "state_version": 1,
+        "streaming": true,
+        "outcome": "interrupted",
+        "language": "kk",
+        "voice": "coral"
+      },
+      {
+        "event_id": "fd596c17-0d61-4af7-9c5a-b73ac3ea7032",
+        "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+        "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+        "timestamp": "2026-09-23T11:48:26.332026+00:00",
+        "type": "tts_playback",
+        "latency": {
+          "response_ready_to_first_byte_ms": 805.1999999880791,
+          "first_playback_ms": 1211.8999999761581
+        },
+        "streaming": true,
+        "state_version": 1,
+        "measurement": "browser playing event; response-ready clock; client reported"
+      },
+      {
+        "event_id": "887f319f-7535-4d08-aabf-2c79d19bb29f",
+        "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+        "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+        "timestamp": "2026-09-23T11:48:25.913771+00:00",
+        "type": "tts_playback",
+        "latency": {
+          "response_ready_to_first_byte_ms": 805.1999999880791
+        },
+        "streaming": true,
+        "state_version": 1,
+        "measurement": "browser playing event; response-ready clock; client reported"
+      },
+      {
+        "event_id": "649062da-d298-492a-8984-5286966feeb1",
+        "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+        "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+        "timestamp": "2026-09-23T11:47:52.121551+00:00",
+        "type": "tts_playback",
+        "latency": {
+          "response_ready_to_first_byte_ms": 903.0,
+          "first_playback_ms": 1112.2999999523163,
+          "complete_stream_ms": 2630.0
+        },
+        "streaming": true,
+        "state_version": 1,
+        "measurement": "browser playing event; response-ready clock; client reported"
+      },
+      {
+        "event_id": "9fb85f5c-303c-44a4-9fa4-b73f46505111",
+        "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+        "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+        "timestamp": "2026-09-23T11:47:52.107312+00:00",
+        "type": "tts",
+        "latency": {
+          "tts_first_byte_ms": 885.9932000050321,
+          "tts_ms": 2619.507000024896
+        },
+        "bytes": 197760,
+        "state_version": 1,
+        "streaming": true,
+        "outcome": "complete",
+        "language": "kk",
+        "voice": "coral"
+      },
+      {
+        "event_id": "f7f62cc0-d5c2-4533-9970-cf2c43711a9f",
+        "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+        "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+        "timestamp": "2026-09-23T11:47:50.603650+00:00",
+        "type": "tts_playback",
+        "latency": {
+          "response_ready_to_first_byte_ms": 903.0,
+          "first_playback_ms": 1112.2999999523163
+        },
+        "streaming": true,
+        "state_version": 1,
+        "measurement": "browser playing event; response-ready clock; client reported"
+      },
+      {
+        "event_id": "7a5a5d4d-d186-45f5-8d0c-b9bdf94ca3ef",
+        "conversation_id": "9b0ec52c-9144-4dbd-b828-9d6b894ed437",
+        "turn_id": "7af1aca6-182a-44da-97b3-fe6da85cffeb",
+        "timestamp": "2026-09-23T11:47:50.388921+00:00",
+        "type": "tts_playback",
+        "latency": {
+          "response_ready_to_first_byte_ms": 903.0
+        },
+        "streaming": true,
+        "state_version": 1,
+        "measurement": "browser playing event; response-ready clock; client reported"
+      }
+    ]
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "status": "GOLDEN L2 LOCKED",
+  "source": "C:\\HackAlem\\PHOENIX-PATCH-WEDGE-FORGE-v1\\halyk-callai\\evaluation\\experiments\\b55-20260923\\L2",
+  "protected_files": {
+    "backend\\app\\catalog\\__init__.py": "603757098f85cb9722dc9495eecada47ff14d453697ec3178fd41896fb1eeb46",
+    "backend\\app\\catalog\\boundaries.py": "f304253f946b909bc1495d88c7f01de82417e2002c0ee1fde8fe8e36dba78636",
+    "backend\\app\\catalog\\compiler.py": "0be24834edf463dc639e29811ef94ce0e8b7012680f3e41576da24ff1ff33295",
+    "backend\\app\\catalog\\loader.py": "d56569aea086409f3a117782bf49b6cb95dcd7c99dbce182a5c3d5357bec4b26",
+    "backend\\app\\config\\__init__.py": "78291d5f6b3a6fd25c3782ffdaa7797866cb7f8bc86b356a071004e175526bf7",
+    "backend\\app\\config\\settings.py": "d5ee77b98687059b4b28edf3ead17586d17dca335affb9968a5adc1431fe8308",
+    "backend\\app\\policy\\__init__.py": "fe157bd7d77414b04b894591dc1601f60dd35ebf75421ad8657b61f82bc6dd7b",
+    "backend\\app\\policy\\decisions.py": "c35096c02c78e4b2714454b219c287f2a7b90e6d793ef0badac18fc8e973ec89",
+    "backend\\app\\policy\\engine.py": "0d96f272b77de06f13f105403af08efab835f3d84ca3de35f07a42506e40ecd4",
+    "backend\\app\\policy\\rules.py": "969a3c5f61a3eded3586381a1d39f8e0e68f770ebb8e18467c87a298742e3383",
+    "backend\\app\\router\\__init__.py": "737c4c403525f15709f264b2164651946dfea8c3c8cbecff2d20eb80d5b12787",
+    "backend\\app\\router\\llm.py": "7f00eea21943ef0c9a746f3205430e2d22041691adefd1f9a84186cb80972b63",
+    "backend\\app\\router\\prompt.py": "ac9f437c4d724b6eec1cdc3f848ff8f9596ea19b8be84b6db2d44855cd3a437f",
+    "backend\\app\\router\\schemas.py": "eb1a4115366865311afce3d9460a2e58dd723797944960bc56bd6723d589eec4",
+    "backend\\app\\router\\telemetry.py": "29602b5c8b09577cd4e31710ea768aa86206eabbddccf040bb9a3facfa76d4e7",
+    "backend\\app\\router\\validator.py": "dcb08823d6a0ca8cf80fbe62686e416323bfa445af02ea7e7646ac780a652a7b"
+  },
+  "model": "gpt-6-astra",
+  "initial_effort": "low",
+  "retry_effort": "medium",
+  "max_requests_per_turn": 2,
+  "concurrency": 2,
+  "prompt_cache_options": {
+    "mode": "explicit",
+    "ttl": "30m"
+  },
+  "official_artifacts": "halyk-callai/evaluation/results",
+  "secrets": "API key remains in local .env, not backed up"
+}

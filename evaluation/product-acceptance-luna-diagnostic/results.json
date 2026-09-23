@@ -1,0 +1,10 @@
+{
+  "obvious_office": "PASS",
+  "ambiguous_boundary_backend": "PASS",
+  "correction_confirmation_idempotency": "FAIL: AssertionError: ",
+  "switch_restore": "FAIL: AssertionError: ",
+  "kazakh": "PASS",
+  "missing_slots": "PASS",
+  "measured_turns": 10,
+  "average_total_text_ms": 8391.696090000914
+}
