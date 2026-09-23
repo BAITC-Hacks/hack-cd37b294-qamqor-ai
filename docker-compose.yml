@@ -1,0 +1,13 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      CALLAI_MODEL: ${CALLAI_MODEL:-gpt-6-astra}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      CALLAI_DATASET_PATH: /data/starter_kit
+    volumes:
+      - ../case_2/voice_router_dataset:/data/starter_kit:ro
+      - ./evaluation/results:/app/evaluation/results

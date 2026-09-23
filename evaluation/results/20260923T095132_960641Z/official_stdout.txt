@@ -1,0 +1,11 @@
+group                     n   primary_acc  full_match
+all                     104         1.000       1.000
+lang=kk                  45         1.000       1.000
+lang=mixed                7         1.000       1.000
+lang=ru                  52         1.000       1.000
+type=multi_intent        13         1.000       1.000
+type=out_of_scope         4         1.000       1.000
+type=single              84         1.000       1.000
+type=unclear              3         1.000       1.000
+
+intent_recall (multi-intent): 1.000

@@ -1,0 +1,15 @@
+group                     n   primary_acc  full_match
+all                     104         0.981       0.981
+lang=kk                  45         0.978       0.978
+lang=mixed                7         1.000       1.000
+lang=ru                  52         0.981       0.981
+type=multi_intent        13         1.000       1.000
+type=out_of_scope         4         1.000       1.000
+type=single              84         0.976       0.976
+type=unclear              3         1.000       1.000
+
+intent_recall (multi-intent): 1.000
+
+Errors (2):
+  U007  expected=['SC04']  got=[]  | Дочь получила права, надо её вписать в полис
+  U008  expected=['SC04']  got=[]  | Әкемді сақтандыруға жүргізуші ретінде қосу керек

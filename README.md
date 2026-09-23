@@ -36,6 +36,14 @@ Internal endpoint `POST /api/route` accepts `RouterInput` and returns validated 
 
 ## Evaluation honesty
 
+**MEASURED, 2026-09-23:** two complete live runs on the unchanged official 104-example development set. Latest run `20260923T095132_960641Z`: primary **104/104**, full-match **104/104**, multi-intent recall **26/26**. RU 52/52, KK 45/45, mixed 7/7. Zero final schema, API or system-intent failures; one schema-repair retry. Mean router latency **9347.58 ms**, p95 **13230.12 ms**. This reused dev set is not an independent hidden-test result.
+
+Initial run: primary 100/104, full-match 99/104, recall 23/26. Measured failures were corrected without changing gold or the scorer. See [run comparison](evaluation/BASELINE_NOTES.md), [latest report](evaluation/results/baseline.md) and [official scorer output](evaluation/results/20260923T095132_960641Z/official_stdout.txt). B0–B5 is executed; full product completion remains B6+.
+
+`python evaluation/run_boundary_probe.py` separately tests the ambiguous payment/policy example from BUILD_SPEC section 13 with live inference. Executed result: **CLARIFY**, targeted KK question, no backend execution. This probe is excluded from official metrics.
+
+If console/report writing is interrupted after all model calls are saved, `python evaluation/recover_report.py evaluation/results/<run-id>` re-executes the original scorer without new inference. It checks source hashes, complete unique IDs and raw/prediction consistency first.
+
 `evaluation/results/baseline.json` and `.md` hold the last measured baseline or an explicit blocked report when none exists. Each attempt has an immutable timestamp directory. `raw.jsonl` contains actual model responses, `predictions.json` contains post-policy IDs, `official_stdout.txt` is the untouched evaluator's output. Failed later attempts do not overwrite a measured baseline. Missing API credentials yield **not measured**, not zero accuracy or fake predictions.
 
 Passed/Failed = primary-scenario correctness. Full-match = set equality. Multi-intent recall = matched expected intents / all expected intents on multi-intent examples. Additional diagnostics report extra intents, incorrect SYS outcomes, schema failures and confusion pairs. Average/p95 latency includes routing retries and errors, excludes policy and audio; p95 uses nearest rank. It is not voice end-to-end latency.

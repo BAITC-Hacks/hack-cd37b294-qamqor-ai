@@ -1,0 +1,104 @@
+{
+  "source": "BUILD_SPEC.md section 13",
+  "official_evaluation": false,
+  "model": "gpt-6-astra",
+  "source_hashes": {
+    "scenarios.json": "6d057b81df7612fc7aa6528a200c0f933729c0c65c02f991a6af30d40d9bb6c4",
+    "slots.json": "56d74f31d257577bf9cd7f70eb337bdfe05fc4c2c632339a56bc4af1a23ab347",
+    "actions.json": "2e5b0b66a10fa9fb85fbe79fefb56513eb0aa413519b6ea3ec8a84173676f03f",
+    "knowledge_base.json": "b6f2224b539d88e625c988af742010fa8ecc4eca8e60de67d40d44c1320e4ce6",
+    "mock_backend.json": "9f488c7ffc7ea90e36f3e9d3e02429d624be225082a63ecc0d63a95cc0813152",
+    "dev_utterances.json": "e09e4a557a24e35e045e62628ed62d55654d5b3a252aa22622d945710795013e",
+    "dialogs_sample.json": "6560f8db98e3046179f4345b3e4efec53c907a24f60a89ffb3c4c43ad3679349",
+    "evaluate.py": "d0b2dbb5043e0c424ab3c7a43ef3cec2249a30a630ce71c40e823608b671c10f"
+  },
+  "prompt_hash": "fbdfa0eaadb198b7117fd8558e5a4bfd5cc8afbd9a2e61616439e7f2229e1018",
+  "code_hashes": {
+    "backend\\app\\main.py": "19e645ac0765f437f9a2134797b17de1145b838379e8279afa2fb1ff9545ef9d",
+    "backend\\app\\__init__.py": "76feecbb29da33385752d31198f94ca6dbd31ae923f94a44deb55cc96a877c92",
+    "backend\\app\\catalog\\boundaries.py": "f304253f946b909bc1495d88c7f01de82417e2002c0ee1fde8fe8e36dba78636",
+    "backend\\app\\catalog\\compiler.py": "0be24834edf463dc639e29811ef94ce0e8b7012680f3e41576da24ff1ff33295",
+    "backend\\app\\catalog\\loader.py": "d56569aea086409f3a117782bf49b6cb95dcd7c99dbce182a5c3d5357bec4b26",
+    "backend\\app\\catalog\\__init__.py": "603757098f85cb9722dc9495eecada47ff14d453697ec3178fd41896fb1eeb46",
+    "backend\\app\\config\\settings.py": "d5ee77b98687059b4b28edf3ead17586d17dca335affb9968a5adc1431fe8308",
+    "backend\\app\\config\\__init__.py": "78291d5f6b3a6fd25c3782ffdaa7797866cb7f8bc86b356a071004e175526bf7",
+    "backend\\app\\policy\\decisions.py": "c35096c02c78e4b2714454b219c287f2a7b90e6d793ef0badac18fc8e973ec89",
+    "backend\\app\\policy\\engine.py": "0d96f272b77de06f13f105403af08efab835f3d84ca3de35f07a42506e40ecd4",
+    "backend\\app\\policy\\rules.py": "969a3c5f61a3eded3586381a1d39f8e0e68f770ebb8e18467c87a298742e3383",
+    "backend\\app\\policy\\__init__.py": "fe157bd7d77414b04b894591dc1601f60dd35ebf75421ad8657b61f82bc6dd7b",
+    "backend\\app\\router\\llm.py": "b369e017f1c2659e3a494fbc59abe4ad133d161a25cbf30f3b14a1dcbbcb57d8",
+    "backend\\app\\router\\prompt.py": "ac9f437c4d724b6eec1cdc3f848ff8f9596ea19b8be84b6db2d44855cd3a437f",
+    "backend\\app\\router\\schemas.py": "eb1a4115366865311afce3d9460a2e58dd723797944960bc56bd6723d589eec4",
+    "backend\\app\\router\\validator.py": "dcb08823d6a0ca8cf80fbe62686e416323bfa445af02ea7e7646ac780a652a7b",
+    "backend\\app\\router\\__init__.py": "737c4c403525f15709f264b2164651946dfea8c3c8cbecff2d20eb80d5b12787"
+  },
+  "request": {
+    "current_user_turn": {
+      "turn_id": "spec-13",
+      "role": "user",
+      "text": "Ақша списали, бірақ полис келмеді"
+    },
+    "history": [],
+    "active_scenario": null,
+    "topic_stack": [],
+    "current_slots": [],
+    "known_evidence": [],
+    "pending_action": null,
+    "latest_backend_results": [],
+    "knowledge_records": [],
+    "response_language": null
+  },
+  "passed": true,
+  "proposal": {
+    "scenarios": [],
+    "alternatives": [
+      "SC30",
+      "SC26"
+    ],
+    "system_intent": "SYS_UNCLEAR",
+    "evidence": [
+      {
+        "evidence_id": "spec-13:e1",
+        "fact": "Клиент сообщает о списании денег и неполучении полиса; выпуск полиса не подтвержден.",
+        "source_type": "user_turn",
+        "source_id": "spec-13",
+        "quote": "Ақша списали, бірақ полис келмеді",
+        "polarity": "positive",
+        "supersedes": null
+      }
+    ],
+    "boundary_checks": [
+      {
+        "scenario_id": "SC30",
+        "neighbor_id": "SC26",
+        "distinguishing_fact": "Не установлено, выпущен ли полис и не доставлен только документ или полис не был оформлен после списания.",
+        "status": "missing",
+        "source_rule": "scenarios.json#/scenarios/29/not_this_if/0",
+        "evidence_ids": [
+          "spec-13:e1"
+        ]
+      }
+    ],
+    "slot_updates": [],
+    "input_language": "mixed",
+    "response_language": "kk",
+    "confidence": 0.96,
+    "topic_relation": "none",
+    "clarification_question": "Полистің рәсімделгені туралы растау келді ме, әлде ақша ғана ұсталды ма?",
+    "reason": "Списание и отсутствие полиса указаны явно, но без подтверждения выпуска нельзя отличить проблему оформления от недоставленного документа."
+  },
+  "decision": {
+    "action": "CLARIFY",
+    "scenarios": [],
+    "system_intent": "SYS_UNCLEAR",
+    "next_active_scenario": null,
+    "next_topic_stack": [],
+    "deferred_scenarios": [],
+    "clarification_question": "Полистің рәсімделгені туралы растау келді ме, әлде ақша ғана ұсталды ма?",
+    "handoff_queue": null,
+    "reason": "Insufficient evidence; preserve active task",
+    "execution_allowed": false
+  },
+  "latency_ms": 12499.603700009175,
+  "error_kind": null
+}

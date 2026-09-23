@@ -1,0 +1,14 @@
+group                     n   primary_acc  full_match
+all                     104         0.990       0.990
+lang=kk                  45         0.978       0.978
+lang=mixed                7         1.000       1.000
+lang=ru                  52         1.000       1.000
+type=multi_intent        13         1.000       1.000
+type=out_of_scope         4         1.000       1.000
+type=single              84         0.988       0.988
+type=unclear              3         1.000       1.000
+
+intent_recall (multi-intent): 1.000
+
+Errors (1):
+  U060  expected=['SC30']  got=['SYS_UNCLEAR']  | Ақша картадан алынды, бірақ полис жоқ

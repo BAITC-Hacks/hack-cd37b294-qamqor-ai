@@ -1,0 +1,1 @@
+"""Halyk CallAI."""

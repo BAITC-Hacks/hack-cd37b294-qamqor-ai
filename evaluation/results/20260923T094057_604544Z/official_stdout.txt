@@ -1,0 +1,18 @@
+group                     n   primary_acc  full_match
+all                     104         0.962       0.952
+lang=kk                  45         0.978       0.978
+lang=mixed                7         1.000       0.857
+lang=ru                  52         0.942       0.942
+type=multi_intent        13         0.846       0.769
+type=out_of_scope         4         1.000       1.000
+type=single              84         0.976       0.976
+type=unclear              3         1.000       1.000
+
+intent_recall (multi-intent): 0.885
+
+Errors (5):
+  U039  expected=['SC20']  got=['SYS_UNCLEAR']  | Когда можно показать машину вашему эксперту?
+  U040  expected=['SC20']  got=['SYS_UNCLEAR']  | Көлікті бағалауға қай күні әкелсем болады?
+  U083  expected=['SC13', 'SC20']  got=['SC13']  | Кеше аулада көлігімді біреу соғып кетіпті, КАСКО бар, и ещё подскажите, где у вас осмотр делают
+  U085  expected=['SC26', 'SC29']  got=['SC29']  | Не пришёл полис на почту, и ещё хочу поменять почту на новую
+  U089  expected=['SC26', 'SC25']  got=['SC25']  | Полис на почту не пришёл, и заодно скажите, до какого числа он действует

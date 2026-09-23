@@ -1,0 +1,1608 @@
+{
+  "as_of_date": "2026-10-01",
+  "scenarios": [
+    {
+      "scenario_id": "SC01",
+      "name": "OGPO price quote",
+      "description": "Client wants to know the price of mandatory motor third-party liability insurance (OGPO) before deciding.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "region",
+          "vehicle_type",
+          "drivers_iin"
+        ],
+        "optional": [
+          "vehicle_plate"
+        ]
+      },
+      "actions": [
+        "get_bm_class",
+        "calc_ogpo_price"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC02",
+      "name": "OGPO purchase",
+      "description": "Client wants to issue (buy) an OGPO policy now.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "vehicle_plate",
+          "drivers_iin",
+          "phone"
+        ],
+        "optional": [
+          "region",
+          "vehicle_type"
+        ]
+      },
+      "actions": [
+        "calc_ogpo_price",
+        "create_policy",
+        "send_sms"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC03",
+      "name": "CASCO consultation and quote",
+      "description": "Client asks about voluntary car insurance (CASCO): what it covers and how much it costs.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "car_value",
+          "car_year"
+        ],
+        "optional": [
+          "franchise",
+          "vehicle_plate"
+        ]
+      },
+      "actions": [
+        "calc_casco_price",
+        "kb_lookup"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC04",
+      "name": "Add driver to motor policy",
+      "description": "Client wants to add a driver to an existing OGPO or CASCO policy.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number",
+          "new_driver_iin"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "get_policy",
+        "get_bm_class",
+        "update_policy"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC05",
+      "name": "Change vehicle or plate in policy",
+      "description": "Client replaced the car or got a new plate and wants to update the policy.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number",
+          "vehicle_plate"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "get_policy",
+        "update_policy"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC06",
+      "name": "Travel insurance purchase",
+      "description": "Client plans a trip abroad and wants to buy travel medical insurance.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "trip_country",
+          "trip_start",
+          "trip_end",
+          "travelers_count",
+          "traveler_max_age"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "calc_travel_price",
+        "create_policy",
+        "send_sms"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC07",
+      "name": "Home insurance consultation",
+      "description": "Client wants to insure an apartment or house, asks conditions and price.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "property_type",
+          "sum_insured"
+        ],
+        "optional": [
+          "property_address"
+        ]
+      },
+      "actions": [
+        "calc_property_price",
+        "kb_lookup"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC08",
+      "name": "Accident insurance consultation",
+      "description": "Client asks about personal accident insurance (injury, disability) for themselves or family.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "sum_insured"
+        ],
+        "optional": []
+      },
+      "actions": [
+        "calc_accident_price",
+        "kb_lookup"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC09",
+      "name": "Individual health insurance consultation",
+      "description": "Client without corporate coverage wants to buy voluntary health insurance (DMS) for themselves.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [],
+        "optional": [
+          "city"
+        ]
+      },
+      "actions": [
+        "kb_lookup"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC10",
+      "name": "Corporate insurance request",
+      "description": "Company representative wants insurance for employees or company assets.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "company_name",
+          "employees_count",
+          "phone"
+        ],
+        "optional": [
+          "email"
+        ]
+      },
+      "actions": [
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": false,
+      "handoff": {
+        "when": "always after collecting contacts",
+        "queue": "corporate_sales"
+      }
+    },
+    {
+      "scenario_id": "SC11",
+      "name": "Road accident just happened",
+      "description": "Client is at the scene of a road accident right now and needs instructions.",
+      "priority": "urgent",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "injured",
+          "location"
+        ],
+        "optional": [
+          "vehicle_plate"
+        ]
+      },
+      "actions": [
+        "kb_lookup",
+        "send_sms",
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": false,
+      "handoff": {
+        "when": "anyone injured or client is confused",
+        "queue": "claims_team"
+      }
+    },
+    {
+      "scenario_id": "SC12",
+      "name": "Claim as victim under culprit's OGPO",
+      "description": "Client was the victim in a past accident; the at-fault driver is insured by Saqta; client wants a payout.",
+      "priority": "high",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "culprit_vehicle_plate",
+          "incident_date",
+          "incident_description",
+          "phone"
+        ],
+        "optional": [
+          "iin"
+        ]
+      },
+      "actions": [
+        "get_policy",
+        "create_claim",
+        "send_sms"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC13",
+      "name": "CASCO damage claim",
+      "description": "Client's car insured under CASCO was damaged or stolen; client wants to file a claim.",
+      "priority": "high",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number",
+          "incident_date",
+          "incident_description"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "get_policy",
+        "create_claim",
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": true,
+      "handoff": {
+        "when": "theft or total loss",
+        "queue": "claims_team"
+      }
+    },
+    {
+      "scenario_id": "SC14",
+      "name": "Property damage claim",
+      "description": "Insured apartment or house was damaged (flood, fire, theft); client reports it.",
+      "priority": "high",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number",
+          "incident_date",
+          "incident_description"
+        ],
+        "optional": [
+          "property_address"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "get_policy",
+        "create_claim",
+        "send_sms",
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": true,
+      "handoff": {
+        "when": "fire with injured people",
+        "queue": "claims_team"
+      }
+    },
+    {
+      "scenario_id": "SC15",
+      "name": "Medical event abroad",
+      "description": "Client is abroad with a travel policy and got sick, injured or needs medical help now.",
+      "priority": "urgent",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number",
+          "location",
+          "incident_description"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "get_policy",
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": false,
+      "handoff": {
+        "when": "always after identifying the policy",
+        "queue": "medical_assistance_24_7"
+      }
+    },
+    {
+      "scenario_id": "SC16",
+      "name": "Accident injury claim",
+      "description": "Insured person got injured in an accident and wants a payout under accident insurance.",
+      "priority": "high",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number",
+          "incident_date",
+          "incident_description"
+        ],
+        "optional": []
+      },
+      "actions": [
+        "find_client",
+        "get_policy",
+        "create_claim",
+        "send_sms"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC17",
+      "name": "Claim status",
+      "description": "Client wants to know the status of an existing claim or payout.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "claim_number"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "get_claim"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC18",
+      "name": "Documents for a claim",
+      "description": "Client asks which documents are needed for a claim or how to submit them.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "product_type"
+        ],
+        "optional": [
+          "claim_number"
+        ]
+      },
+      "actions": [
+        "kb_lookup",
+        "send_sms"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC19",
+      "name": "Disagreement with claim decision",
+      "description": "Client disagrees with a claim refusal or the payout amount and wants to challenge it.",
+      "priority": "high",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "claim_number",
+          "complaint_text"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "get_claim",
+        "create_dispute",
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": true,
+      "handoff": {
+        "when": "client asks for a person",
+        "queue": "claims_team"
+      }
+    },
+    {
+      "scenario_id": "SC20",
+      "name": "Book vehicle inspection",
+      "description": "Client with a registered claim wants to book a damage inspection of the vehicle.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "claim_number",
+          "city",
+          "preferred_date"
+        ],
+        "optional": []
+      },
+      "actions": [
+        "get_claim",
+        "book_inspection"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC21",
+      "name": "Doctor appointment under DMS",
+      "description": "Client with DMS wants to see a doctor and asks to book an appointment.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number",
+          "doctor_specialty",
+          "city",
+          "preferred_date"
+        ],
+        "optional": []
+      },
+      "actions": [
+        "find_client",
+        "book_appointment"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC22",
+      "name": "DMS coverage check",
+      "description": "Client asks whether their health insurance covers a specific service, test or medication.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number",
+          "service_name"
+        ],
+        "optional": []
+      },
+      "actions": [
+        "find_client",
+        "check_coverage"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC23",
+      "name": "Partner clinics list",
+      "description": "Client asks which clinics work under Saqta DMS in their city.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "city"
+        ],
+        "optional": [
+          "doctor_specialty"
+        ]
+      },
+      "actions": [
+        "list_clinics",
+        "send_sms"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC24",
+      "name": "DMS e-card issue",
+      "description": "Client cannot find or did not receive their electronic DMS card.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "phone"
+        ],
+        "optional": [
+          "policy_number"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "kb_lookup",
+        "send_sms"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC25",
+      "name": "Check policy validity",
+      "description": "Client wants to check whether a policy is active and until when.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "get_policy"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC26",
+      "name": "Resend policy documents",
+      "description": "Policy is issued and paid, but the client did not receive the document by SMS or email.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "phone"
+        ],
+        "optional": [
+          "policy_number",
+          "email"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "get_policies",
+        "resend_documents"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC27",
+      "name": "Policy renewal",
+      "description": "Client's policy is expiring or expired recently and they want to extend it.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "get_policy",
+        "renew_policy",
+        "send_sms"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC28",
+      "name": "Policy termination and refund",
+      "description": "Client wants to terminate a policy early (e.g. sold the car) and get a refund for unused months.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number",
+          "cancel_reason"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "get_policy",
+        "cancel_policy"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC29",
+      "name": "Update contact details",
+      "description": "Client wants to change phone number, email or address in their profile.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "contact_field",
+          "new_value"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "update_contact"
+      ],
+      "requires_confirmation": true,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC30",
+      "name": "Charged but policy not issued",
+      "description": "Money was charged but the policy was not issued or payment status is unclear.",
+      "priority": "high",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "payment_date",
+          "phone"
+        ],
+        "optional": [
+          "payment_amount"
+        ]
+      },
+      "actions": [
+        "find_client",
+        "check_payment",
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": false,
+      "handoff": {
+        "when": "payment found but policy not issued",
+        "queue": "operator_general"
+      }
+    },
+    {
+      "scenario_id": "SC31",
+      "name": "Payment methods and installments",
+      "description": "Client asks how to pay for a policy or whether installments are available.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [],
+        "optional": [
+          "product_type"
+        ]
+      },
+      "actions": [
+        "kb_lookup"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC32",
+      "name": "Bonus-malus class and price change",
+      "description": "Client asks about their bonus-malus class or why the OGPO price changed.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "iin"
+        ],
+        "optional": []
+      },
+      "actions": [
+        "get_bm_class",
+        "kb_lookup"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC33",
+      "name": "Office addresses and hours",
+      "description": "Client asks where an office is or what the working hours are.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "city"
+        ],
+        "optional": []
+      },
+      "actions": [
+        "get_offices",
+        "send_sms"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC34",
+      "name": "Mobile app and account help",
+      "description": "Client has trouble with the mobile app or personal account: login, SMS code, errors.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "kb_lookup",
+        "send_sms",
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": false,
+      "handoff": {
+        "when": "problem not solved by standard steps",
+        "queue": "operator_general"
+      }
+    },
+    {
+      "scenario_id": "SC35",
+      "name": "Service complaint",
+      "description": "Client complains about service quality: rudeness, no callback, delays.",
+      "priority": "high",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "complaint_text"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "create_complaint",
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": false,
+      "handoff": {
+        "when": "client asks for a person or is very upset",
+        "queue": "complaints_team"
+      }
+    },
+    {
+      "scenario_id": "SC36",
+      "name": "Callback request",
+      "description": "Client asks to be called back later at a convenient time. The phone number is only needed for the callback; do not run full client identification.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "phone",
+          "callback_time"
+        ],
+        "optional": []
+      },
+      "actions": [
+        "create_callback"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC37",
+      "name": "Request a human operator",
+      "description": "Client explicitly asks to talk to a human operator.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [],
+        "optional": [
+          "topic"
+        ]
+      },
+      "actions": [
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": false,
+      "handoff": {
+        "when": "always",
+        "queue": "operator_general"
+      }
+    },
+    {
+      "scenario_id": "SC38",
+      "name": "Suspicious call or fraud report",
+      "description": "Client received a suspicious call or message in the name of Saqta, or suspects fraud.",
+      "priority": "urgent",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "fraud_details"
+        ],
+        "optional": [
+          "phone"
+        ]
+      },
+      "actions": [
+        "report_fraud",
+        "kb_lookup",
+        "transfer_to_operator"
+      ],
+      "requires_confirmation": false,
+      "handoff": {
+        "when": "client already shared codes or card data",
+        "queue": "security_team"
+      }
+    },
+    {
+      "scenario_id": "SC39",
+      "name": "Certificate or document copy request",
+      "description": "Client needs a certificate (e.g. for an embassy), a duplicate or a copy of the contract.",
+      "priority": "normal",
+      "requires_identification": true,
+      "slots": {
+        "required": [
+          "policy_number",
+          "document_type",
+          "email"
+        ],
+        "optional": []
+      },
+      "actions": [
+        "find_client",
+        "request_document"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    },
+    {
+      "scenario_id": "SC40",
+      "name": "Policy terms explanation",
+      "description": "Client asks to explain insurance terms: deductible, exclusions, limits, what is not covered.",
+      "priority": "normal",
+      "requires_identification": false,
+      "slots": {
+        "required": [
+          "topic"
+        ],
+        "optional": [
+          "product_type"
+        ]
+      },
+      "actions": [
+        "kb_lookup"
+      ],
+      "requires_confirmation": false,
+      "handoff": null
+    }
+  ],
+  "system_intents": [
+    {
+      "id": "SYS_OUT_OF_SCOPE",
+      "description": "Request is not about Saqta insurance services (loans, weather, jobs, life insurance which is not offered).",
+      "behavior": "Say politely that Saqta cannot help with this, suggest what the bot can do.",
+      "response": {
+        "ru": "С этим я, к сожалению, не помогу. Могу подсказать по страховке авто, здоровья, жилья и поездок.",
+        "kk": "Өкінішке қарай, бұл сұраққа көмектесе алмаймын. Көлік, денсаулық, тұрғын үй және сапар сақтандыруы бойынша көмектесемін."
+      }
+    },
+    {
+      "id": "SYS_UNCLEAR",
+      "description": "Intent cannot be determined with enough confidence.",
+      "behavior": "Ask one short clarifying question, offering the 2 most likely options.",
+      "response": {
+        "ru": "Уточните, пожалуйста: вы хотите {option_a} или {option_b}?",
+        "kk": "Нақтылап жіберіңізші: {option_a} керек пе, әлде {option_b} ме?"
+      }
+    },
+    {
+      "id": "SYS_GOODBYE",
+      "description": "Client ends the conversation.",
+      "behavior": "Thank and close.",
+      "response": {
+        "ru": "Спасибо за обращение! Хорошего дня.",
+        "kk": "Хабарласқаныңызға рақмет! Күніңіз сәтті өтсін."
+      }
+    }
+  ],
+  "boundary_rules": [
+    {
+      "rule_id": "scenarios.json#/scenarios/0/not_this_if/0",
+      "scenario_id": "SC01",
+      "neighbor_id": "SC02",
+      "condition": "Client already decided and asks to issue or buy the policy"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/0/not_this_if/1",
+      "scenario_id": "SC01",
+      "neighbor_id": "SC32",
+      "condition": "Client asks why the price went up compared to last year"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/1/not_this_if/0",
+      "scenario_id": "SC02",
+      "neighbor_id": "SC01",
+      "condition": "Client only asks the price"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/1/not_this_if/1",
+      "scenario_id": "SC02",
+      "neighbor_id": "SC27",
+      "condition": "Client wants to extend a policy that is about to expire"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/2/not_this_if/0",
+      "scenario_id": "SC03",
+      "neighbor_id": "SC01",
+      "condition": "Client asks about the mandatory policy OGPO"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/2/not_this_if/1",
+      "scenario_id": "SC03",
+      "neighbor_id": "SC13",
+      "condition": "Client reports damage under an existing CASCO"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/3/not_this_if/0",
+      "scenario_id": "SC04",
+      "neighbor_id": "SC05",
+      "condition": "Client wants to replace the car in the policy"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/4/not_this_if/0",
+      "scenario_id": "SC05",
+      "neighbor_id": "SC28",
+      "condition": "Client sold the car and wants to terminate the policy with a refund"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/4/not_this_if/1",
+      "scenario_id": "SC05",
+      "neighbor_id": "SC04",
+      "condition": "Client adds a driver"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/5/not_this_if/0",
+      "scenario_id": "SC06",
+      "neighbor_id": "SC15",
+      "condition": "Client is already abroad and needs medical help or reports an event"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/5/not_this_if/1",
+      "scenario_id": "SC06",
+      "neighbor_id": "SC39",
+      "condition": "Client needs a certificate for the embassy on an existing policy"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/6/not_this_if/0",
+      "scenario_id": "SC07",
+      "neighbor_id": "SC14",
+      "condition": "Property is already damaged and client reports it"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/7/not_this_if/0",
+      "scenario_id": "SC08",
+      "neighbor_id": "SC16",
+      "condition": "Client already had an accident and asks for a payout"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/7/not_this_if/1",
+      "scenario_id": "SC08",
+      "neighbor_id": "SYS_OUT_OF_SCOPE",
+      "condition": "Client asks about life insurance, which the company does not offer"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/8/not_this_if/0",
+      "scenario_id": "SC09",
+      "neighbor_id": "SC22",
+      "condition": "Client already has DMS and asks what it covers"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/8/not_this_if/1",
+      "scenario_id": "SC09",
+      "neighbor_id": "SC10",
+      "condition": "Client represents a company and wants coverage for employees"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/9/not_this_if/0",
+      "scenario_id": "SC10",
+      "neighbor_id": "SC22",
+      "condition": "Individual employee asks about their own corporate DMS"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/10/not_this_if/0",
+      "scenario_id": "SC11",
+      "neighbor_id": "SC12",
+      "condition": "Accident happened earlier and the client wants to file for a payout as the victim"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/10/not_this_if/1",
+      "scenario_id": "SC11",
+      "neighbor_id": "SC13",
+      "condition": "Accident happened earlier and the client has CASCO"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/11/not_this_if/0",
+      "scenario_id": "SC12",
+      "neighbor_id": "SC11",
+      "condition": "Accident is happening right now"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/11/not_this_if/1",
+      "scenario_id": "SC12",
+      "neighbor_id": "SC13",
+      "condition": "Client was at fault or claims under own CASCO"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/12/not_this_if/0",
+      "scenario_id": "SC13",
+      "neighbor_id": "SC11",
+      "condition": "Accident is happening right now"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/12/not_this_if/1",
+      "scenario_id": "SC13",
+      "neighbor_id": "SC12",
+      "condition": "Client is the victim and the culprit has OGPO with Saqta"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/13/not_this_if/0",
+      "scenario_id": "SC14",
+      "neighbor_id": "SC07",
+      "condition": "Client only wants to buy home insurance"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/14/not_this_if/0",
+      "scenario_id": "SC15",
+      "neighbor_id": "SC06",
+      "condition": "Client is planning a trip and wants to buy a policy"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/14/not_this_if/1",
+      "scenario_id": "SC15",
+      "neighbor_id": "SC22",
+      "condition": "Client asks about corporate DMS coverage at home"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/15/not_this_if/0",
+      "scenario_id": "SC16",
+      "neighbor_id": "SC08",
+      "condition": "Client asks about buying accident insurance"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/15/not_this_if/1",
+      "scenario_id": "SC16",
+      "neighbor_id": "SC11",
+      "condition": "Injury happened in a road accident at the scene now"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/16/not_this_if/0",
+      "scenario_id": "SC17",
+      "neighbor_id": "SC19",
+      "condition": "Client disagrees with the decision or the amount"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/16/not_this_if/1",
+      "scenario_id": "SC17",
+      "neighbor_id": "SC18",
+      "condition": "Client asks which documents are needed"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/17/not_this_if/0",
+      "scenario_id": "SC18",
+      "neighbor_id": "SC39",
+      "condition": "Client asks for a certificate or copy of a policy"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/17/not_this_if/1",
+      "scenario_id": "SC18",
+      "neighbor_id": "SC17",
+      "condition": "Client asks the status of a claim"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/18/not_this_if/0",
+      "scenario_id": "SC19",
+      "neighbor_id": "SC17",
+      "condition": "Client only asks the status"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/18/not_this_if/1",
+      "scenario_id": "SC19",
+      "neighbor_id": "SC35",
+      "condition": "Client complains about service quality, not the decision"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/19/not_this_if/0",
+      "scenario_id": "SC20",
+      "neighbor_id": "SC13",
+      "condition": "No claim is registered yet"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/20/not_this_if/0",
+      "scenario_id": "SC21",
+      "neighbor_id": "SC23",
+      "condition": "Client only asks for the list of clinics"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/20/not_this_if/1",
+      "scenario_id": "SC21",
+      "neighbor_id": "SC22",
+      "condition": "Client asks whether a service is covered"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/21/not_this_if/0",
+      "scenario_id": "SC22",
+      "neighbor_id": "SC15",
+      "condition": "Client is abroad and needs help under a travel policy"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/21/not_this_if/1",
+      "scenario_id": "SC22",
+      "neighbor_id": "SC40",
+      "condition": "Client asks about general exclusions of any product"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/22/not_this_if/0",
+      "scenario_id": "SC23",
+      "neighbor_id": "SC21",
+      "condition": "Client wants to be booked to a doctor"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/23/not_this_if/0",
+      "scenario_id": "SC24",
+      "neighbor_id": "SC34",
+      "condition": "Client cannot log into the app in general"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/24/not_this_if/0",
+      "scenario_id": "SC25",
+      "neighbor_id": "SC26",
+      "condition": "Client did not receive policy documents"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/24/not_this_if/1",
+      "scenario_id": "SC25",
+      "neighbor_id": "SC38",
+      "condition": "Client got a suspicious call about policy cancellation"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/25/not_this_if/0",
+      "scenario_id": "SC26",
+      "neighbor_id": "SC30",
+      "condition": "Money was charged but the policy was not issued"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/25/not_this_if/1",
+      "scenario_id": "SC26",
+      "neighbor_id": "SC39",
+      "condition": "Client needs a certificate or copy for another purpose"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/26/not_this_if/0",
+      "scenario_id": "SC27",
+      "neighbor_id": "SC02",
+      "condition": "Client has no policy with Saqta and buys a new one"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/27/not_this_if/0",
+      "scenario_id": "SC28",
+      "neighbor_id": "SC05",
+      "condition": "Client replaces the car and keeps the policy"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/27/not_this_if/1",
+      "scenario_id": "SC28",
+      "neighbor_id": "SC35",
+      "condition": "Client is angry about service; cancellation is not clearly requested"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/28/not_this_if/0",
+      "scenario_id": "SC29",
+      "neighbor_id": "SC05",
+      "condition": "Client changes vehicle data in the policy"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/29/not_this_if/0",
+      "scenario_id": "SC30",
+      "neighbor_id": "SC26",
+      "condition": "Policy was issued, only the document did not arrive"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/29/not_this_if/1",
+      "scenario_id": "SC30",
+      "neighbor_id": "SC31",
+      "condition": "Client asks which payment methods exist"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/30/not_this_if/0",
+      "scenario_id": "SC31",
+      "neighbor_id": "SC30",
+      "condition": "Money was charged but the policy was not issued"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/31/not_this_if/0",
+      "scenario_id": "SC32",
+      "neighbor_id": "SC01",
+      "condition": "Client just wants a new price quote"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/32/not_this_if/0",
+      "scenario_id": "SC33",
+      "neighbor_id": "SC20",
+      "condition": "Client asks where vehicles are inspected for a claim"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/33/not_this_if/0",
+      "scenario_id": "SC34",
+      "neighbor_id": "SC24",
+      "condition": "Client cannot find the DMS card specifically"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/34/not_this_if/0",
+      "scenario_id": "SC35",
+      "neighbor_id": "SC19",
+      "condition": "Client disagrees with the claim decision or amount"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/34/not_this_if/1",
+      "scenario_id": "SC35",
+      "neighbor_id": "SC28",
+      "condition": "Client clearly asks to terminate the policy"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/35/not_this_if/0",
+      "scenario_id": "SC36",
+      "neighbor_id": "SC37",
+      "condition": "Client wants a person right now"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/36/not_this_if/0",
+      "scenario_id": "SC37",
+      "neighbor_id": "SC36",
+      "condition": "Client wants to be called later"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/37/not_this_if/0",
+      "scenario_id": "SC38",
+      "neighbor_id": "SC25",
+      "condition": "Client simply wants to check whether the policy is active"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/38/not_this_if/0",
+      "scenario_id": "SC39",
+      "neighbor_id": "SC26",
+      "condition": "Policy document simply did not arrive after purchase"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/38/not_this_if/1",
+      "scenario_id": "SC39",
+      "neighbor_id": "SC18",
+      "condition": "Client asks which documents to submit for a claim"
+    },
+    {
+      "rule_id": "scenarios.json#/scenarios/39/not_this_if/0",
+      "scenario_id": "SC40",
+      "neighbor_id": "SC22",
+      "condition": "Client asks whether a specific medical service is covered by their DMS"
+    }
+  ],
+  "slots": [
+    {
+      "name": "phone",
+      "type": "string",
+      "description": "Client phone number, normalized to +7XXXXXXXXXX",
+      "pattern": "^\\+7\\d{10}$"
+    },
+    {
+      "name": "iin",
+      "type": "string",
+      "description": "Individual identification number (IIN), 12 digits",
+      "pattern": "^\\d{12}$"
+    },
+    {
+      "name": "policy_number",
+      "type": "string",
+      "description": "Policy number",
+      "pattern": "^SQ-(OGPO|CASCO|TRVL|PROP|NS|DMS)-\\d{6}$"
+    },
+    {
+      "name": "claim_number",
+      "type": "string",
+      "description": "Claim number",
+      "pattern": "^CL-\\d{6}$"
+    },
+    {
+      "name": "vehicle_plate",
+      "type": "string",
+      "description": "Vehicle registration plate",
+      "pattern": "^\\d{3}[A-Z]{2,3}\\d{2}$"
+    },
+    {
+      "name": "culprit_vehicle_plate",
+      "type": "string",
+      "description": "Plate of the at-fault vehicle in a road accident",
+      "pattern": "^\\d{3}[A-Z]{2,3}\\d{2}$"
+    },
+    {
+      "name": "vehicle_type",
+      "type": "enum",
+      "description": "Vehicle type",
+      "values": [
+        "car",
+        "truck",
+        "motorcycle"
+      ]
+    },
+    {
+      "name": "region",
+      "type": "enum",
+      "description": "Vehicle registration region for OGPO pricing",
+      "values": [
+        "almaty",
+        "astana",
+        "other"
+      ]
+    },
+    {
+      "name": "drivers_iin",
+      "type": "list",
+      "description": "IINs of all drivers to be listed in the policy",
+      "pattern": "^\\d{12}$"
+    },
+    {
+      "name": "new_driver_iin",
+      "type": "string",
+      "description": "IIN of the driver to add",
+      "pattern": "^\\d{12}$"
+    },
+    {
+      "name": "car_value",
+      "type": "integer",
+      "description": "Market value of the car, KZT"
+    },
+    {
+      "name": "car_year",
+      "type": "integer",
+      "description": "Car manufacturing year"
+    },
+    {
+      "name": "franchise",
+      "type": "enum",
+      "description": "CASCO deductible, KZT",
+      "values": [
+        0,
+        50000,
+        100000
+      ]
+    },
+    {
+      "name": "product_type",
+      "type": "enum",
+      "description": "Insurance product",
+      "values": [
+        "ogpo",
+        "casco",
+        "travel",
+        "property",
+        "accident",
+        "dms"
+      ]
+    },
+    {
+      "name": "trip_country",
+      "type": "string",
+      "description": "Destination country"
+    },
+    {
+      "name": "trip_start",
+      "type": "date",
+      "description": "Trip start date"
+    },
+    {
+      "name": "trip_end",
+      "type": "date",
+      "description": "Trip end date"
+    },
+    {
+      "name": "travelers_count",
+      "type": "integer",
+      "description": "Number of travelers"
+    },
+    {
+      "name": "traveler_max_age",
+      "type": "integer",
+      "description": "Age of the oldest traveler"
+    },
+    {
+      "name": "property_type",
+      "type": "enum",
+      "description": "Property type",
+      "values": [
+        "apartment",
+        "house"
+      ]
+    },
+    {
+      "name": "property_address",
+      "type": "string",
+      "description": "Property address"
+    },
+    {
+      "name": "sum_insured",
+      "type": "enum",
+      "description": "Sum insured, KZT",
+      "values": [
+        1000000,
+        3000000,
+        5000000,
+        10000000,
+        20000000
+      ]
+    },
+    {
+      "name": "incident_date",
+      "type": "date",
+      "description": "Date of the insured event"
+    },
+    {
+      "name": "incident_description",
+      "type": "text",
+      "description": "Short description of what happened"
+    },
+    {
+      "name": "injured",
+      "type": "boolean",
+      "description": "Whether anyone is injured"
+    },
+    {
+      "name": "location",
+      "type": "string",
+      "description": "Where the client is right now"
+    },
+    {
+      "name": "city",
+      "type": "enum",
+      "description": "City",
+      "values": [
+        "Almaty",
+        "Astana",
+        "Shymkent",
+        "Karaganda",
+        "Aktobe",
+        "Atyrau",
+        "Pavlodar",
+        "Oskemen"
+      ]
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "description": "Email",
+      "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+    },
+    {
+      "name": "contact_field",
+      "type": "enum",
+      "description": "Which contact detail to change",
+      "values": [
+        "phone",
+        "email",
+        "address"
+      ]
+    },
+    {
+      "name": "new_value",
+      "type": "string",
+      "description": "New value of the contact detail"
+    },
+    {
+      "name": "payment_date",
+      "type": "date",
+      "description": "Date of payment"
+    },
+    {
+      "name": "payment_amount",
+      "type": "integer",
+      "description": "Paid amount, KZT"
+    },
+    {
+      "name": "callback_time",
+      "type": "string",
+      "description": "Preferred callback time"
+    },
+    {
+      "name": "doctor_specialty",
+      "type": "string",
+      "description": "Doctor specialty"
+    },
+    {
+      "name": "service_name",
+      "type": "string",
+      "description": "Medical service or item to check coverage for"
+    },
+    {
+      "name": "preferred_date",
+      "type": "date",
+      "description": "Preferred date"
+    },
+    {
+      "name": "company_name",
+      "type": "string",
+      "description": "Company name"
+    },
+    {
+      "name": "employees_count",
+      "type": "integer",
+      "description": "Number of employees"
+    },
+    {
+      "name": "cancel_reason",
+      "type": "text",
+      "description": "Reason for cancellation"
+    },
+    {
+      "name": "complaint_text",
+      "type": "text",
+      "description": "Essence of the complaint or disagreement"
+    },
+    {
+      "name": "fraud_details",
+      "type": "text",
+      "description": "What the suspicious caller said or asked"
+    },
+    {
+      "name": "document_type",
+      "type": "enum",
+      "description": "Requested document",
+      "values": [
+        "policy_duplicate",
+        "contract_copy",
+        "embassy_certificate",
+        "payment_certificate"
+      ]
+    },
+    {
+      "name": "topic",
+      "type": "string",
+      "description": "Topic of an informational question"
+    }
+  ],
+  "not_offered": [
+    "life insurance",
+    "pension annuities",
+    "loans and deposits",
+    "mortgage lending"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "proposal": {
+    "scenarios": [],
+    "alternatives": [],
+    "system_intent": "SYS_GOODBYE",
+    "evidence": [
+      {
+        "evidence_id": "live-http-goodbye:e1",
+        "fact": "Клиент завершает разговор.",
+        "source_type": "user_turn",
+        "source_id": "live-http-goodbye",
+        "quote": "До свидания",
+        "polarity": "positive",
+        "supersedes": null
+      }
+    ],
+    "boundary_checks": [],
+    "slot_updates": [],
+    "input_language": "ru",
+    "response_language": "ru",
+    "confidence": 1.0,
+    "topic_relation": "none",
+    "clarification_question": null,
+    "reason": "Клиент явно прощается, бизнес-запросов нет."
+  },
+  "decision": {
+    "action": "END",
+    "scenarios": [],
+    "system_intent": "SYS_GOODBYE",
+    "next_active_scenario": null,
+    "next_topic_stack": [],
+    "deferred_scenarios": [],
+    "clarification_question": null,
+    "handoff_queue": null,
+    "reason": "Explicit end of conversation",
+    "execution_allowed": false
+  },
+  "router_latency_ms": 5387.065400020219,
+  "retry_count": 0
+}

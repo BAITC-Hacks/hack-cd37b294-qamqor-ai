@@ -1,0 +1,361 @@
+{
+  "status": "executed",
+  "official_examples": 104,
+  "metrics": {
+    "total": 104,
+    "attempted": 104,
+    "passed": 102,
+    "failed": 2,
+    "primary_accuracy": 0.9807692307692307,
+    "full_match_count": 102,
+    "full_match": 0.9807692307692307,
+    "recall_hit": 26,
+    "recall_total": 26,
+    "recall": 1.0,
+    "top_confusion_pairs": [
+      {
+        "expected": "SC04",
+        "predicted": "NO_PREDICTION",
+        "count": 2
+      }
+    ],
+    "schema_failures": 0,
+    "schema_failed_attempts": 1,
+    "system_intent_failures": 0,
+    "api_failures": 2,
+    "average_router_latency_ms": 18874.740237497183,
+    "p95_router_latency_ms": 12256.040500011295,
+    "latency_sample_count": 104,
+    "latency_definition": "Per utterance wall time of routing including shared-budget retry, excluding policy; nearest-rank p95; errors included",
+    "per_scenario": {
+      "SC01": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC02": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC03": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC04": {
+        "total": 3,
+        "missed": 2,
+        "primary_error": 2
+      },
+      "SC05": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC06": {
+        "total": 4,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC07": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC08": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC09": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC10": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC11": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC12": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC13": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC14": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC15": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC16": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC17": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC18": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC19": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC20": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC21": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC22": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC23": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC24": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC25": {
+        "total": 5,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC26": {
+        "total": 4,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC27": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC28": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC29": {
+        "total": 5,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC30": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC31": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC32": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC33": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC34": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC35": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC36": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC37": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC38": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC39": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SC40": {
+        "total": 2,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SYS_OUT_OF_SCOPE": {
+        "total": 4,
+        "missed": 0,
+        "primary_error": 0
+      },
+      "SYS_UNCLEAR": {
+        "total": 3,
+        "missed": 0,
+        "primary_error": 0
+      }
+    },
+    "groups": {
+      "lang=ru": {
+        "total": 52,
+        "primary": 51,
+        "full_match": 51
+      },
+      "type=single": {
+        "total": 84,
+        "primary": 82,
+        "full_match": 82
+      },
+      "lang=kk": {
+        "total": 45,
+        "primary": 44,
+        "full_match": 44
+      },
+      "lang=mixed": {
+        "total": 7,
+        "primary": 7,
+        "full_match": 7
+      },
+      "type=multi_intent": {
+        "total": 13,
+        "primary": 13,
+        "full_match": 13
+      },
+      "type=out_of_scope": {
+        "total": 4,
+        "primary": 4,
+        "full_match": 4
+      },
+      "type=unclear": {
+        "total": 3,
+        "primary": 3,
+        "full_match": 3
+      }
+    },
+    "errors": [
+      {
+        "id": "U007",
+        "text": "Дочь получила права, надо её вписать в полис",
+        "expected": [
+          "SC04"
+        ],
+        "predicted": [],
+        "categories": [
+          "MISSED_INTENT",
+          "WRONG_ROUTE"
+        ],
+        "technical_error": "API_ERROR"
+      },
+      {
+        "id": "U008",
+        "text": "Әкемді сақтандыруға жүргізуші ретінде қосу керек",
+        "expected": [
+          "SC04"
+        ],
+        "predicted": [],
+        "categories": [
+          "MISSED_INTENT",
+          "WRONG_ROUTE"
+        ],
+        "technical_error": "API_ERROR"
+      }
+    ]
+  },
+  "metadata": {
+    "run_id": "20260923T101514_156514Z",
+    "model": "gpt-6-astra",
+    "base_url": "https://api.openai.com/v1",
+    "reasoning": [
+      "low",
+      "medium_on_bounded_retry"
+    ],
+    "temperature": "provider default; not supplied",
+    "concurrency": 2,
+    "python": "3.12.10",
+    "catalog_hash": "303beccc6cec9de03fec0dd8aca7ca9b17cebaf9ff4dba15663133d3b40c8a1e",
+    "prompt_hash": "fbdfa0eaadb198b7117fd8558e5a4bfd5cc8afbd9a2e61616439e7f2229e1018",
+    "source_hashes": {
+      "scenarios.json": "6d057b81df7612fc7aa6528a200c0f933729c0c65c02f991a6af30d40d9bb6c4",
+      "slots.json": "56d74f31d257577bf9cd7f70eb337bdfe05fc4c2c632339a56bc4af1a23ab347",
+      "actions.json": "2e5b0b66a10fa9fb85fbe79fefb56513eb0aa413519b6ea3ec8a84173676f03f",
+      "knowledge_base.json": "b6f2224b539d88e625c988af742010fa8ecc4eca8e60de67d40d44c1320e4ce6",
+      "mock_backend.json": "9f488c7ffc7ea90e36f3e9d3e02429d624be225082a63ecc0d63a95cc0813152",
+      "dev_utterances.json": "e09e4a557a24e35e045e62628ed62d55654d5b3a252aa22622d945710795013e",
+      "dialogs_sample.json": "6560f8db98e3046179f4345b3e4efec53c907a24f60a89ffb3c4c43ad3679349",
+      "evaluate.py": "d0b2dbb5043e0c424ab3c7a43ef3cec2249a30a630ce71c40e823608b671c10f"
+    },
+    "code_hashes": {
+      "backend\\app\\main.py": "cdc2b0d38bf05669091ae9111a25e9d1b06a08c557946c8de3792021d39833d2",
+      "backend\\app\\__init__.py": "76feecbb29da33385752d31198f94ca6dbd31ae923f94a44deb55cc96a877c92",
+      "backend\\app\\catalog\\boundaries.py": "f304253f946b909bc1495d88c7f01de82417e2002c0ee1fde8fe8e36dba78636",
+      "backend\\app\\catalog\\compiler.py": "0be24834edf463dc639e29811ef94ce0e8b7012680f3e41576da24ff1ff33295",
+      "backend\\app\\catalog\\loader.py": "d56569aea086409f3a117782bf49b6cb95dcd7c99dbce182a5c3d5357bec4b26",
+      "backend\\app\\catalog\\__init__.py": "603757098f85cb9722dc9495eecada47ff14d453697ec3178fd41896fb1eeb46",
+      "backend\\app\\config\\settings.py": "d5ee77b98687059b4b28edf3ead17586d17dca335affb9968a5adc1431fe8308",
+      "backend\\app\\config\\__init__.py": "78291d5f6b3a6fd25c3782ffdaa7797866cb7f8bc86b356a071004e175526bf7",
+      "backend\\app\\policy\\decisions.py": "c35096c02c78e4b2714454b219c287f2a7b90e6d793ef0badac18fc8e973ec89",
+      "backend\\app\\policy\\engine.py": "0d96f272b77de06f13f105403af08efab835f3d84ca3de35f07a42506e40ecd4",
+      "backend\\app\\policy\\rules.py": "969a3c5f61a3eded3586381a1d39f8e0e68f770ebb8e18467c87a298742e3383",
+      "backend\\app\\policy\\__init__.py": "fe157bd7d77414b04b894591dc1601f60dd35ebf75421ad8657b61f82bc6dd7b",
+      "backend\\app\\router\\llm.py": "73e659da8aa27e7632426c3615dc486998634de75c7ff150ef6062b35e848bb1",
+      "backend\\app\\router\\prompt.py": "ac9f437c4d724b6eec1cdc3f848ff8f9596ea19b8be84b6db2d44855cd3a437f",
+      "backend\\app\\router\\schemas.py": "eb1a4115366865311afce3d9460a2e58dd723797944960bc56bd6723d589eec4",
+      "backend\\app\\router\\telemetry.py": "29602b5c8b09577cd4e31710ea768aa86206eabbddccf040bb9a3facfa76d4e7",
+      "backend\\app\\router\\validator.py": "dcb08823d6a0ca8cf80fbe62686e416323bfa445af02ea7e7646ac780a652a7b",
+      "backend\\app\\router\\__init__.py": "737c4c403525f15709f264b2164651946dfea8c3c8cbecff2d20eb80d5b12787",
+      "evaluation\\experiment.py": "19f1bb01fde1d144397f8d8cbb7be60921343b1d391585faffe7535441f332ef",
+      "evaluation\\latency_profile.py": "be2a9d4e65903c103ef62ab7eb9b5ac4888df282d9b00bfd0d9a6aa7aaeccff9",
+      "evaluation\\recover_report.py": "aa19c6d72b73297179a2e08dbfb90d65331bd54f88d33d86a4c69b6132902ee8",
+      "evaluation\\report.py": "3fb9eab8960b290ab5b022aa0308199dd4a7eda22b582ed17dbd7fb48ab520a8",
+      "evaluation\\run_boundary_probe.py": "5aabc223e3d46320ef0981ca2db95e654730e361f8b33f8509d949dfe17b4185",
+      "evaluation\\run_official.py": "c9ae30c7a2721cccbb2fef68dcb5879681db4bc464b99932cb027f26b744dc67",
+      "evaluation\\__init__.py": "3908ddf2325a2280508263324381f09a7ab51813583606e89970d277f9b5f242"
+    }
+  },
+  "run_directory": "C:\\HackAlem\\PHOENIX-PATCH-WEDGE-FORGE-v1\\halyk-callai\\evaluation\\experiments\\b55-20260923\\L1\\halyk-callai\\evaluation\\results\\20260923T101514_156514Z",
+  "blocker": null
+}
