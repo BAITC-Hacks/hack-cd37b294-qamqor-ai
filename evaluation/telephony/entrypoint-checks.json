@@ -1,0 +1,17 @@
+[
+  {
+    "case": "missing",
+    "exit_code": 0,
+    "output": "[TELEPHONY] disabled"
+  },
+  {
+    "case": "disabled",
+    "exit_code": 0,
+    "output": "[TELEPHONY] disabled"
+  },
+  {
+    "case": "enabled_missing_decoder",
+    "exit_code": 0,
+    "output": "[TELEPHONY] unavailable — disabled (RuntimeError)"
+  }
+]

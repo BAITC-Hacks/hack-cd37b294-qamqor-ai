@@ -1,0 +1,116 @@
+{
+  "timestamp": "2026-09-23T12:34:18.285645+00:00",
+  "source": "Existing synthetic RU/KK caller fixtures; real STT/router/TTS HTTP requests, not a microphone/Asterisk test",
+  "results": [
+    {
+      "language": "ru",
+      "streamed_tts": false,
+      "stt": {
+        "text": "Где находится ваш офис в Алма-Аты?",
+        "final": true,
+        "latency_ms": 2138.7285999953747
+      },
+      "chat": {
+        "conversation_id": "ac7c6713-e246-43ab-95d9-5e9fe3fe1a6b",
+        "turn_id": "a9f34b3c-f87a-42bf-b5d5-7565af91c69d",
+        "text": "Офис в Almaty: Abai Ave 150. Часы работы: Mon-Fri 09:00-18:00, Sat 10:00-15:00.",
+        "language": "ru",
+        "state_version": 1,
+        "pending_action": null,
+        "latency": {
+          "stt_ms": 2138.7285999953747,
+          "router_ms": 9944.55159996869,
+          "policy_ms": 0.03260001540184021,
+          "backend_ms": 2.594500023405999,
+          "response_composition_ms": 0.016400008462369442,
+          "tts_ms": null,
+          "total_text_ms": 9957.199399999809
+        },
+        "citations": [
+          "knowledge_base.json#/offices/0"
+        ],
+        "event_id": "7f481995-be5b-4faf-8504-f5431f465a57",
+        "mock_backend": true
+      },
+      "tts_headers": {
+        "x-tts-latency-ms": "3648.965700005647"
+      },
+      "status": "PASS",
+      "audio_bytes": 189696,
+      "http_audio_chunks": 3,
+      "client_first_audio_ms": 3669.101999956183,
+      "total_ms": 15826.550300000235
+    },
+    {
+      "language": "kk",
+      "streamed_tts": true,
+      "stt": {
+        "text": "Алматыдағы кенсеңіз қайда орналасқан!",
+        "final": true,
+        "latency_ms": 1885.3474000352435
+      },
+      "chat": {
+        "conversation_id": "c7af0f85-8d35-41ee-ab0f-4269b55d5f4a",
+        "turn_id": "490c9461-6554-42c1-92f2-5f8e0c3a6868",
+        "text": "Almaty: Abai Ave 150. Жұмыс уақыты: Mon-Fri 09:00-18:00, Sat 10:00-15:00.",
+        "language": "kk",
+        "state_version": 1,
+        "pending_action": null,
+        "latency": {
+          "stt_ms": 1885.3474000352435,
+          "router_ms": 8159.693600027822,
+          "policy_ms": 0.032400013878941536,
+          "backend_ms": 1.9064000225625932,
+          "response_composition_ms": 0.0247000134550035,
+          "tts_ms": null,
+          "total_text_ms": 8171.710500027984
+        },
+        "citations": [
+          "knowledge_base.json#/offices/0"
+        ],
+        "event_id": "89c7bacf-932b-4185-a50a-c05be8a96f44",
+        "mock_backend": true
+      },
+      "tts_headers": {
+        "x-tts-first-byte-ms": "1334.2117000138387",
+        "x-tts-streaming": "true"
+      },
+      "status": "PASS",
+      "audio_bytes": 199296,
+      "http_audio_chunks": 98,
+      "client_first_audio_ms": 1349.8213000129908,
+      "total_ms": 13259.482100023888
+    }
+  ],
+  "health_before": {
+    "status": "ok",
+    "scope": "conversation",
+    "routing": "golden-L2",
+    "backend": "mock"
+  },
+  "voice_status": {
+    "configured": true,
+    "api_access_verified": false,
+    "stt_model": "whisper-1",
+    "tts_model": "gpt-4o-mini-tts",
+    "transport": "final-utterance",
+    "ai_generated_voice": true,
+    "tts": {
+      "provider": "openai",
+      "model": "gpt-4o-mini-tts",
+      "voice_ru": "marin",
+      "voice_kk": "marin",
+      "speed": 1.0,
+      "format": "mp3",
+      "sample_rate": "provider default; no API override",
+      "streaming_supported": true
+    }
+  },
+  "health_after": {
+    "status": "ok",
+    "scope": "conversation",
+    "routing": "golden-L2",
+    "backend": "mock"
+  },
+  "frontend_http_status": 200
+}

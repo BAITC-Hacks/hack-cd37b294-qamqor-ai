@@ -1,0 +1,24 @@
+# Separate opt-in project. Never include this in the main application compose.
+name: callai-asterisk-experimental
+services:
+  asterisk:
+    profiles: [telephony]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      TELEPHONY_ENABLED: ${TELEPHONY_ENABLED:-false}
+      CALLAI_AUDIO_SOCKET_TARGET: ${CALLAI_AUDIO_SOCKET_TARGET:-127.0.0.1:9092}
+    # Preserves the bridge's loopback-only bind. On Docker Desktop, host
+    # networking must already be enabled by the operator; this file cannot
+    # enable it. No SIP/RTP/ARI/AMI listener or published port is configured.
+    network_mode: host
+    restart: "no"
+    init: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - ./fixtures:/fixtures:ro
+      - recordings:/recordings
+volumes:
+  recordings:
