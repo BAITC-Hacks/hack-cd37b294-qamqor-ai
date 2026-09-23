@@ -44,7 +44,6 @@ async def main():
     if manifest_path.exists():
         raise SystemExit('Comparison set already exists. Audition it; do not regenerate or change candidates automatically.')
     settings = Settings.load()
-    settings.require_api_key()
     limit = asyncio.Semaphore(2)
     async with httpx.AsyncClient() as client:
         base = OpenAIAudio(settings, client)

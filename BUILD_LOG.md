@@ -95,3 +95,23 @@ Browser found a React cleanup exception from implicitly returning scrollIntoView
 Executed validation: 131 pytest PASS (evaluation/product-tests.xml), one Node playback interruption test PASS, full dataset validator PASS with only original D01 warning, compileall PASS, pip check PASS, Next.js production build PASS, HTTP health/readiness/frontend smoke PASS, .\scripts\run.ps1 demo actually started both servers. Runtime /ready verifies model gpt-6-astra. Current golden hash verification: 16/16 match.
 
 Limits: all business execution is mock; outbox records are not real delivery. Calendar slots are a documented simulation because starter kit has no availability calendar. No production authentication or identity proofing; bind only loopback. Human-microphone and noisy/multi-speaker Kazakh tests remain unverified. No synthetic training corpus generated. No routing latency experiment added.
+
+## 2026-09-23 — speech quality pass, Golden L2 unchanged
+
+Implemented speech-only env configuration, RU/KK voice selection from the committed response language, restrained call-center instructions, deterministic pronunciation normalization, and progressive MP3 playback with cancellation and complete-file fallback. Kept coral as the current default pending human choice. No router/policy/composer/state/action/evaluation edits or new routing inference calls.
+
+Generated exactly one comparison set: coral, marin, cedar at speed 1.0, all five requested phrases, 15 successful real TTS MP3 outputs. Human audition page: frontend/public/voice_samples/index.html. New files are 24 kHz mono. No subjective naturalness or native Kazakh pronunciation result is claimed.
+
+Executed: 192 backend tests PASS, 9 frontend playback tests PASS, Next production build PASS, compileall PASS, pip check PASS. Real browser RU ready-to-first-byte/playback/complete: 1364.80 / 1380.10 / 2667.20 ms. KK: 903.00 / 1112.30 / 2630.00 ms. These replay existing committed answers; browser playing is a proxy. Interruption closes streaming and preserves session state. All 16 Golden L2 hashes unchanged; all other preexisting backend files unchanged. Evidence and exact file list: docs/VOICE_QUALITY.md; evaluation/voice-quality-*.json/xml. Final voice selection is left to the human; no further voice tuning performed after comparison generation.
+
+## 2026-09-23 — Human selected marin for RU and KK
+
+The user selected marin for both languages at the existing speed 1.0. Selected configuration: `TTS_VOICE_RU=marin`, `TTS_VOICE_KK=marin`, `TTS_SPEED=1.0`, applied through local `.env` and `.env.example`; runtime verification is a separate step. This supersedes the earlier pending human-choice status. No additional sample generation or evaluation accompanies the selection. Historical browser measurements above used coral and remain coral results; the saved comparison samples and manifest are unchanged.
+
+Runtime verification after applying human choice: /api/voice/status through the frontend reports voice_ru=marin, voice_kk=marin, speed=1.0, model=gpt-4o-mini-tts. Backend health is OK after restart. Existing focused voice suite executed: 33 passed, 0 failed. No new audio generation or routing evaluation.
+
+## 2026-09-23 — Kazakh time pronunciation correction
+
+User reported unclear Kazakh time pronunciation with the selected marin voice. Reproduced the exact latest office answer: the prior speech normalizer left `09:00 мен 18:00 аралығы` and `10:00 мен 15:00 аралығы` as numeric clock ranges, delegating their pronunciation to TTS. Replaced valid Kazakh ranges with spelled-out 24-hour values and grammatical endpoints: `сағат тоғыздан он сегізге дейін`, `сағат оннан он беске дейін`. Nonzero minutes remain explicit; no rounding. Existing `сағат` prefixes no longer duplicate, and already-suffixed numeric ranges normalize consistently. Russian output and all business response/state logic remain unchanged.
+
+Executed 74 focused normalizer/voice tests: passed. Restarted the backend and made one real streaming TTS request for the existing committed Kazakh office answer with marin. Saved evaluation/voice-time-fix/kk-office-marin.mp3 and before/after evidence in evaluation/voice-time-fix/normalization.json. Actual generation first byte 2380.31 ms; complete download 3972.62 ms. Audio generation succeeded; subjective listening is left to the user. All 16 Golden L2 hashes still match. No routing call or evaluation rerun.
