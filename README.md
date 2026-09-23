@@ -335,7 +335,7 @@ http://127.0.0.1:3000
 | TTS                   | `gpt-4o-mini-tts`            | Синтез речи                               |
 | TTS API               | `/audio/speech`              | Text → audio                              |
 | Голоса                | `marin`                      | RU / KK                                   |
-| DB                    | SQLite                       | Диалоги и состояние                       |
+| DB                    | SQLite (для пилота)                       | Диалоги и состояние                       |
 | Data                  | JSON / JSONL                 | Dataset и события                         |
 | Browser Audio         | MediaRecorder / MediaSource  | Голосовой интерфейс                       |
 | Telephony             | Asterisk AudioSocket adapter | Экспериментальная IP-телефония            |
